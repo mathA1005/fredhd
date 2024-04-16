@@ -47,6 +47,11 @@ class ChambreController extends Controller
             $chambre->equipements()->sync($request->equipements);
         }
 
-        // Rediriger vers une route appropriée après la création de la chambre
-        return redirect()->route('chambre.index')->with('success', 'Chambre créée avec succès.');
+        $equipements = Equipement::all();
+
+        // Rediriger vers la même vue de création avec un message de succès
+        return redirect()->route('chambre.create')->with([
+            'success' => 'Chambre créée avec succès.',
+            'equipements' => $equipements  // Assurer que les équipements sont de nouveau disponibles pour la vue
+        ]);
     }}

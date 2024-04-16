@@ -25,13 +25,13 @@
         </div>
 
         <div class="space-y-4">
-            @foreach ($equipements as $equipements)
-                <div>
-                    <label class="inline-flex items-center">
-                        <input type="checkbox" class="form-checkbox text-indigo-600" name="equipements[]" value="{{ $equipement->id }}">
-                        <span class="ml-2">{{ $equipement->nom }}</span>
-                    </label>
-                </div>
+        @foreach ($equipements as $equipement) <!-- Change here -->
+            <div>
+                <label class="inline-flex items-center">
+                    <input type="checkbox" class="form-checkbox text-indigo-600" name="equipements[]" value="{{ $equipement->id }}">
+                    <span class="ml-2">{{ $equipement->nom }}</span>
+                </label>
+            </div>
             @endforeach
         </div>
         <div class="mb-4">
