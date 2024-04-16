@@ -1,6 +1,7 @@
 <?php
 
 namespace Database\Factories;
+use App\Models\Equipement;
 use App\Models\User;
 use App\Models\chambre;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -20,4 +21,10 @@ class ChambreFactory extends Factory
             'photo' => $this->faker->imageUrl(640, 480, 'room', true)
         ];
     }
-}
+    public function configure()
+    {
+        return $this->afterCreating(function (Chambre $chambre) {
+            $equipements = Equipement::all()->random(mt_rand(1, 5));
+            $chambre->equipements()->attach($equipements);
+        });
+}}

@@ -12,6 +12,13 @@
         <h2>{{ $chambre->nom }}</h2>
         <p>{{ $chambre->description }}</p>
         <img src="{{ $chambre->photo }}" alt="Photo de la chambre {{ $chambre->nom }}">
+
+        <!-- Affichage des équipements liés à la chambre -->
+        <ul>
+            @foreach ($chambre->equipements as $equipement)
+                <li>{{ $equipement->nom }}</li>
+            @endforeach
+        </ul>
     </div>
 @endforeach
 </body>
