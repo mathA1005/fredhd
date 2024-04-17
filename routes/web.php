@@ -3,6 +3,8 @@ use App\Http\Controllers\ChambreController;
 use App\Http\Controllers\EquipementController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ReservationController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,6 +22,8 @@ Route::post('/chambre', [ChambreController::class, 'store'])->name('chambre.stor
 Route::get('/equipements', [EquipementController::class, 'index'])->name('equipements.index');
 Route::get('/equipements/create', [EquipementController::class, 'create'])->name('equipements.create');
 Route::post('/equipements', [EquipementController::class, 'store'])->name('equipements.store');
+Route::get('/chambres/{chambre}/availability', [ChambreController::class, 'checkAvailability'])->name('chambres.checkAvailability');
+Route::get('/reservations', [ReservationController::class, 'index'])->name('reservation.index');
 
 // Groupe de routes protégées par authentification pour le ProfileController
 Route::middleware('auth')->group(function () {
