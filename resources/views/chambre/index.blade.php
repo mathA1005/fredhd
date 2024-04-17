@@ -21,5 +21,15 @@
         </ul>
     </div>
 @endforeach
+@foreach ($chambres as $chambre)
+    <div class="p-4 hover:bg-gray-200">
+        <h2 class="text-xl font-bold">
+            <!-- Assurez-vous que le lien utilise 'id' pour passer l'identifiant -->
+            <a href="{{ route('chambre.show', ['id' => $chambre->id]) }}">{{ $chambre->nom }}</a>
+        </h2>
+        <p>{{ Str::limit($chambre->description, 150) }}</p>
+    </div>
+@endforeach
+
 </body>
 </html>

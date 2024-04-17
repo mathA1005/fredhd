@@ -23,6 +23,19 @@ class ChambreController extends Controller
             'equipements' => $equipements,
         ]);    }
 
+
+
+    public function show($id)
+    {
+        // Récupère la chambre par ID, lance une erreur 404 si elle n'est pas trouvée
+        $chambre = Chambre::findOrFail($id);
+
+        // Retourne la vue avec la chambre
+        return view('chambre.show', ['chambre' => $chambre]);
+    }
+
+
+
     public function store(Request $request)
     {
         // Valider les données du formulaire
@@ -54,4 +67,8 @@ class ChambreController extends Controller
             'success' => 'Chambre créée avec succès.',
             'equipements' => $equipements  // Assurer que les équipements sont de nouveau disponibles pour la vue
         ]);
+
+
+
+
     }}
