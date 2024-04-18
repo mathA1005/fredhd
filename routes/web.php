@@ -23,7 +23,11 @@ Route::get('/equipements', [EquipementController::class, 'index'])->name('equipe
 Route::get('/equipements/create', [EquipementController::class, 'create'])->name('equipements.create');
 Route::post('/equipements', [EquipementController::class, 'store'])->name('equipements.store');
 Route::get('/chambres/{chambre}/availability', [ChambreController::class, 'checkAvailability'])->name('chambres.checkAvailability');
-Route::get('/reservations', [ReservationController::class, 'index'])->name('reservation.index');
+
+Route::middleware(['admin'])->group(function () {
+    Route::get('/reservations', [ReservationController::class, 'index'])->name('reservation.index');
+    // Ajoutez d'autres routes administratives ici
+});
 
 // Groupe de routes protégées par authentification pour le ProfileController
 Route::middleware('auth')->group(function () {
