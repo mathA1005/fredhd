@@ -23,6 +23,8 @@ class EquipementFactory extends Factory
         return [
             'nom' => $this->faker->word,
             'description' => $this->faker->realTextBetween($minNbChars = 50, $maxNbChars = 150),
+            'start_date' => $this->faker->date(),
+            'end_date' => $this->faker->date(),
         ];
     }
 }

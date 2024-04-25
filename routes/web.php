@@ -24,8 +24,10 @@ Route::get('/equipements/create', [EquipementController::class, 'create'])->name
 Route::post('/equipements', [EquipementController::class, 'store'])->name('equipements.store');
 Route::get('/chambres/{chambre}/availability', [ChambreController::class, 'checkAvailability'])->name('chambres.checkAvailability');
 
-Route::middleware(['admin'])->group(function () {
-    Route::get('/reservations', [ReservationController::class, 'index'])->name('reservation.index');
+
+
+Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
+    Route::get('/reservations', [ReservationController::class, 'index'])->name('Admin.index');
     // Ajoutez d'autres routes administratives ici
 });
 
