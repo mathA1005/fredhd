@@ -18,6 +18,8 @@
     "dependencies": {
         "@fullcalendar/core": "^6.1.11",
         "@fullcalendar/daygrid": "^6.1.11",
-        "@fullcalendar/interaction": "^6.1.11"
+        "@fullcalendar/interaction": "^6.1.11",
+        "lucide": "^0.376.1",
+        "preline": "^2.1.0"
     }
 }

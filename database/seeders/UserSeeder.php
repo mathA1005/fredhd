@@ -11,6 +11,14 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+        \App\Models\User::factory()->create(
+            [
+                'name' => 'Admin User 2',
+                'email' => app('default_user.email'),
+                'password' => Hash::make(app('default_user.email')),
+                'role_id' => 1,
+            ]
+        );
         // On crée un admin
         \App\Models\User::factory()->create([
             'name' => 'Admin User',
