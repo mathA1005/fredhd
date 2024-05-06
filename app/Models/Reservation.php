@@ -1,14 +1,14 @@
 <?php
 
 namespace App\Models;
-use App\Models\chambre;
-use App\Models\user;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Reservation extends Model
 {
+    use HasFactory;
+
     protected $casts = [
         'start_date' => 'datetime',
         'end_date' => 'datetime',

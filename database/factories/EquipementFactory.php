@@ -1,9 +1,7 @@
 <?php
 
 namespace Database\Factories;
-use App\Models\equipement;
-
-use Database\Seeders\EquipementSeeder;
+use App\Models\Equipement;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,10 +19,10 @@ class EquipementFactory extends Factory
     public function definition()
     {
         return [
-            'nom' => $this->faker->word,
-            'description' => $this->faker->realTextBetween($minNbChars = 50, $maxNbChars = 150),
-            'start_date' => $this->faker->date(),
-            'end_date' => $this->faker->date(),
+            'icon' => $this->faker->word,
+            'label' => $this->faker->realTextBetween($minNbChars = 50, $maxNbChars = 150),
+            'created_at' => $this->faker->date(),
+            'updated_at' => $this->faker->date(),
         ];
     }
 }
