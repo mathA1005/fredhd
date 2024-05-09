@@ -1,26 +1,26 @@
 <?php
 namespace App\Models;
-use App\Models\Equipement;
-use App\Models\Reservation;
-
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Chambre extends Model
+
+class Room extends Model
 {
     use HasFactory;
     protected $fillable = ['nom', 'description', 'photo'];
+    public $timestamps = false;
 
-    public function equipements()
+    public function roomOptions(): BelongsToMany
     {
-        return $this->belongsToMany(Equipement::class);
+        return $this->belongsToMany(RoomOptions::class, RoomsRoomOptions::class)->withPivot('value');
     }
     public function reservations()
     {
         return $this->hasMany(Reservation::class);
     }
-    public function checkAvailability(Request $request, Chambre $chambre)
+    public function checkAvailability(Request $request, Room $chambre)
     {
         $start_date = $request->start_date;
         $end_date = $request->end_date;

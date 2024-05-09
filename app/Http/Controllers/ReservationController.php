@@ -9,6 +9,6 @@ class ReservationController extends Controller
     public function index()
     {
         $reservations = Reservation::with(['chambre', 'admin'])->get();
-        return view('Admin.index', compact('reservations'));
+        return view('admin.index', compact('reservations'));
     }
 }

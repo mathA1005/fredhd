@@ -1,14 +1,19 @@
 <?php
 namespace App\Http\Controllers;
-use App\Models\Equipement;
+use App\Models\RoomOptions;
 use Illuminate\Http\Request;
 
-class EquipementController extends Controller
+class RoomOptionsController extends Controller
 {
     public function index()
     {
-        $equipements = Equipement::all('nom'); // Récupère uniquement les noms des équipements
-        return view('equipement.index', ['equipements' => $equipements]);
+        $options = RoomOptions::all('label'); // Récupère uniquement les labels des options
+        return view(
+            'equipement.index',
+            [
+                'options' => $options
+            ]
+        );
     }
 
     public function create()
@@ -23,7 +28,7 @@ class EquipementController extends Controller
             'description' => 'required|string' // Assurez-vous que le formulaire contient ce champ
         ]);
 
-        $equipement = new Equipement();
+        $equipement = new RoomOptions();
         $equipement->nom = $request->nom;
         $equipement->description = $request->description; // Assignation de la description
         $equipement->save();

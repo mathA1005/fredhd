@@ -15,7 +15,7 @@ class Reservation extends Model
     ];
     public function chambre()
     {
-        return $this->belongsTo(Chambre::class);
+        return $this->belongsTo(Room::class);
     }
 
     public function user()
