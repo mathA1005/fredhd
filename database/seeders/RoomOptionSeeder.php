@@ -5,7 +5,7 @@ use App\Models\Room;
 use App\Models\RoomOptions;
 use Illuminate\Database\Seeder;
 
-class RoomOptionsSeeder extends Seeder
+class RoomOptionSeeder extends Seeder
 {
     private const OPTIONS = [
         [

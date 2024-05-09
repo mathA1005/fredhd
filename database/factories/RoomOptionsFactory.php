@@ -1,13 +1,14 @@
 <?php
 
 namespace Database\Factories;
+
 use App\Models\RoomOptions;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\RoomOptions>
  */
-class RoomOptionFactory extends Factory
+class RoomOptionsFactory extends Factory
 {
     protected $model = RoomOptions::class;
 

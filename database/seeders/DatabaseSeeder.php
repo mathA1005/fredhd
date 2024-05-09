@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
         $this->truncateAllTables();
         $this->call(RoleSeeder::class);
         $this->call(UserSeeder::class);
-        $this->call(RoomOptionsSeeder::class);
+        $this->call(RoomOptionSeeder::class);
         $this->call(RoomSeeder::class);
         $this->call(ReservationSeeder::class);
 

@@ -7,12 +7,12 @@
         </div>
     </a>
     <div class="pt-4">
-        <a href="#" class="relative inline-block font-medium text-lg text-black before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-lime-400 before:transition before:origin-left before:scale-x-0 group-hover:before:scale-x-100 dark:text-white">
+        <a href="#" class="relative inline-block font-medium text-lg text-black before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-lime-400 before:transition before:origin-left before:scale-x-0 group-hover:before:scale-x-100 text-neutral-800">
             Chambre 1
         </a>
         <p class="mt-1 text-gray-600 dark:text-neutral-400">
         <ul>
-            <li><i data-lucide="arrow-down-left"></i> test </li>
+            <li><i data-lucide="arrow-down-left" class="inline"></i> test </li>
             <li>consectetur adipisicin</li>
             <li> porro repudiandae v</li>
             <li>m dolor sit ametg</li>
