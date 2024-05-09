@@ -23,10 +23,12 @@ class RoomOptionsController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nom' => 'required|string|max:255',
-            'description' => 'required|string' // Assurez-vous que le formulaire contient ce champ
-        ]);
+        $request->validate(
+            [
+                'nom' => 'required|string|max:255',
+                'description' => 'required|string' // Assurez-vous que le formulaire contient ce champ
+            ]
+        );
 
         $equipement = new RoomOptions();
         $equipement->nom = $request->nom;

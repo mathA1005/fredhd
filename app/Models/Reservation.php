@@ -13,7 +13,7 @@ class Reservation extends Model
         'start_date' => 'datetime',
         'end_date' => 'datetime',
     ];
-    public function chambre()
+    public function room()
     {
         return $this->belongsTo(Room::class);
     }
