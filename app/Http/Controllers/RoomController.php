@@ -4,19 +4,23 @@ namespace App\Http\Controllers;
 use App\Models\RoomOptions;
 use App\Models\Room;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+
 
 class RoomController extends Controller
 {
     public function index()
     {
-        $chambres = Room::all();
+        $room = Room::all();
 
         return view('chambre.index', [
-            'chambres' => $chambres,
+            'chambres' => $room,
         ]);
     }
     public function create()
-    {
+    {   if (! Gate::allows('admin')) {
+        abort(403);
+    }
         $equipements = RoomOptions::all(); // Assurez-vous que le modèle RoomOptions est bien importé avec use App\Models\RoomOptions;
 
         return view('chambre.create', [
@@ -28,10 +32,10 @@ class RoomController extends Controller
     public function show($id)
     {
         // Récupère la chambre par ID, lance une erreur 404 si elle n'est pas trouvée
-        $chambre = Room::findOrFail($id);
+        $room = Room::findOrFail($id);
 
         // Retourne la vue avec la chambre
-        return view('chambre.show', ['chambre' => $chambre]);
+        return view('chambre.show', ['room' => $room]);
     }
 
 
@@ -40,24 +44,24 @@ class RoomController extends Controller
     {
         // Valider les données du formulaire
         $validatedData = $request->validate([
-            'nom' => 'required|max:255',
+            'label' => 'required|max:255',
             'description' => 'required',
-            'photo' => 'required|image',
+            'picture' => 'required|image',
         ]);
 
         // Stocker le fichier photo et obtenir le chemin
-        $path = $request->file('photo')->store('public/chambres');
+        $path = $request->file('picture')->store('public/chambres');
 
         // Créer la nouvelle chambre avec les données validées
-        $chambre = new Room();
-        $chambre->nom = $validatedData['nom'];
-        $chambre->description = $validatedData['description'];
-        $chambre->photo = $path;
-        $chambre->save(); // Sauvegarder la chambre avant de synchroniser les équipements
+        $room = new Room();
+        $room->label = $validatedData['label'];
+        $room->description = $validatedData['description'];
+        $room->picture = $path;
+        $room->save(); // Sauvegarder la chambre avant de synchroniser les équipements
 
         // Vérifier si des équipements ont été fournis et les synchroniser
         if ($request->has('equipements')) {
-            $chambre->roomOptions()->sync($request->equipements);
+            $room->roomOptions()->sync($request->room_options);
         }
 
         $equipements = roomOptions::all();
@@ -68,7 +72,7 @@ class RoomController extends Controller
             'equipements' => $equipements  // Assurer que les équipements sont de nouveau disponibles pour la vue
         ]);
 
+    }
 
 
-
-    }}
+}

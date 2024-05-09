@@ -1,6 +1,9 @@
 @extends('layouts.main')
 
 @section('content')
+    <section class="testimonials">
+        <x-about.header/>
+    </section>
 
     <div class="container mx-auto">
         Fredhousedurbuy se situe dans le petit village de Heyd en bordure de forêt.
@@ -25,5 +28,8 @@
 
         Au plaisir de faire votre connaissance, à très vite 😊👍
     </div>
+    <section class="testimonials">
+        <x-about.gallery/>
+    </section>
 
 @endsection

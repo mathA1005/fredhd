@@ -12,7 +12,7 @@
         </a>
         <p class="mt-1 text-gray-600 dark:text-neutral-400">
         <ul>
-            <li><i data-lucide="arrow-down-left" class="inline"></i> test </li>
+            <li><i data-lucide="arrow-down-left"></i> test </li>
             <li>consectetur adipisicin</li>
             <li> porro repudiandae v</li>
             <li>m dolor sit ametg</li>

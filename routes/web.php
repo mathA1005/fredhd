@@ -16,6 +16,8 @@ Route::get('/dashboard', function () {
 Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
     Route::get('/reservations', [ReservationController::class, 'index'])->name('admin.index');
     // Ajoutez d'autres routes administratives ici
+    Route::post('/chambre', [RoomController::class, 'store'])->name('chambre.store');
+
 });
 
 // Groupe de routes protégées par authentification pour le ProfileController
@@ -33,7 +35,6 @@ Route::get('/about', [AboutController::class, 'index'])->name('about.index');
 Route::get('/chambre', [RoomController::class, 'index'])->name('chambre.index');
 Route::get('/chambre/create', [RoomController::class, 'create'])->name('chambre.create');
 Route::get('/chambre/{id}', [RoomController::class, 'show'])->name('chambre.show');
-Route::post('/chambre', [RoomController::class, 'store'])->name('chambre.store');
 Route::get('/chambres/{chambre}/availability', [RoomController::class, 'checkAvailability'])->name('chambres.checkAvailability');
 
 Route::get('/equipements', [RoomOptionsController::class, 'index'])->name('equipements.index');

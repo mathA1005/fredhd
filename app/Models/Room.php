@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Room extends Model
 {
     use HasFactory;
-    protected $fillable = ['nom', 'description', 'photo'];
+    protected $fillable = ['label', 'description', 'picture'];
     public $timestamps = false;
 
     public function roomOptions(): BelongsToMany

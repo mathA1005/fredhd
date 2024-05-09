@@ -25,14 +25,14 @@ class RoomOptionsController extends Controller
     {
         $request->validate(
             [
-                'nom' => 'required|string|max:255',
-                'description' => 'required|string' // Assurez-vous que le formulaire contient ce champ
+                'icon' => 'required|string|max:255',
+                'label' => 'required|string' // Assurez-vous que le formulaire contient ce champ
             ]
         );
 
         $equipement = new RoomOptions();
-        $equipement->nom = $request->nom;
-        $equipement->description = $request->description; // Assignation de la description
+        $equipement->icon = $request->icon;
+        $equipement->label = $request->label; // Assignation de la description
         $equipement->save();
 
         return redirect()->route('equipements.index');

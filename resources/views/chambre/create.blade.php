@@ -11,10 +11,10 @@
     <form action="{{ route('chambre.store') }}" method="POST" enctype="multipart/form-data" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         @csrf
         <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="nom">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="label">
                 Nom de la chambre
             </label>
-            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="nom" name="nom" type="text" placeholder="Nom de la chambre">
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="label" name="label" type="text" placeholder="Nom de la chambre">
         </div>
 
         <div class="mb-4">
@@ -29,16 +29,16 @@
             <div>
                 <label class="inline-flex items-center">
                     <input type="checkbox" class="form-checkbox text-indigo-600" name="equipements[]" value="{{ $equipement->id }}">
-                    <span class="ml-2">{{ $equipement->nom }}</span>
+                    <span class="ml-2">{{ $equipement->label }}</span>
                 </label>
             </div>
             @endforeach
         </div>
         <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="photo">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="picture">
                 Photo de la chambre
             </label>
-            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="photo" name="photo" type="file">
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="picture" name="picture" type="file">
         </div>
 
         <div class="flex items-center justify-between">
