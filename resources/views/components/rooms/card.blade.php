@@ -1,4 +1,5 @@
 @props(['id', 'picture', 'room_name', 'area', 'nb_person', 'room_description', 'status', 'options'])
+<a href="{{ route('rooms.show', $id) }}">
 
 <div
     class="bg-white border rounded-xl shadow-sm sm:flex dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70 my-8">
@@ -8,6 +9,7 @@
              src="https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2532&q=80"
              alt="Image Description">
     </div>
+
     <div class="flex flex-wrap">
         <div class="p-4 flex flex-col h-full sm:p-7">
             <h3 class="text-lg font-bold text-gray-800 dark:text-white">
@@ -30,6 +32,8 @@
                     {{ $room_description }}
                 </p>
             </div>
+
         </div>
     </div>
+</div>
 </div>
