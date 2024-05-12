@@ -8,12 +8,17 @@
 <body>
 <div class="container">
     <h1>Liste des Équipements</h1>
-    @if($equipements->isEmpty())
+    @if($roomOptions->isEmpty())
         <p>Aucun équipement trouvé.</p>
     @else
         <ul>
-            @foreach ($equipements as $equipement)
-                <li>{{ $equipement->nom }}</li>
+            @foreach ($roomOptions as $roomOption)
+                <li>{{ $roomOption->label }}</li>
+            @endforeach
+        </ul>
+        <ul>
+            @foreach ($roomOptions as $roomOption)
+                <li>{{ $roomOption->icon }}</li>
             @endforeach
         </ul>
     @endif

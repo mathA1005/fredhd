@@ -2,23 +2,26 @@
 namespace App\Http\Controllers;
 use App\Models\RoomOptions;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class RoomOptionsController extends Controller
 {
-    public function index()
+
+        public function index()
     {
-        $options = RoomOptions::all('label'); // Récupère uniquement les labels des options
-        return view(
-            'equipement.index',
-            [
-                'options' => $options
-            ]
-        );
+        // Récupère toutes les options de salle depuis la base de données
+        $roomOptions = RoomOptions::all();
+
+        // Passe les options à la vue "index.blade.php"
+        return view('options.index', ['roomOptions' => $roomOptions]);
     }
 
     public function create()
     {
-        return view('equipement.create');
+        if (! Gate::allows('admin')) {
+            abort(403);
+        }
+        return view('options.create');
     }
 
     public function store(Request $request)
@@ -30,12 +33,12 @@ class RoomOptionsController extends Controller
             ]
         );
 
-        $equipement = new RoomOptions();
-        $equipement->icon = $request->icon;
-        $equipement->label = $request->label; // Assignation de la description
-        $equipement->save();
+        $roomOptions = new RoomOptions();
+        $roomOptions->icon = $request->icon;
+        $roomOptions->label = $request->label; // Assignation de la description
+        $roomOptions->save();
 
-        return redirect()->route('equipements.index');
+        return redirect()->route('options.index');
     }
 
 }

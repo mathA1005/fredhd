@@ -34,7 +34,7 @@
                     <a class="relative inline-block text-black before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-lime-400 dark:text-neutral-800" href="{{ route('home.index') }}" aria-current="page">Accueil</a>
                 </div>
                 <div>
-                    <a class="inline-block text-black hover:text-gray-600 dark:text-neutral-800 dark:hover:text-neutral-600" href="{{ route('chambre.index') }}">Chambres</a>
+                    <a class="inline-block text-black hover:text-gray-600 dark:text-neutral-800 dark:hover:text-neutral-600" href="{{ route('rooms.index') }}">Chambres</a>
                 </div>
                 <div>
                     <a class="inline-block text-black hover:text-gray-600 dark:text-neutral-800 dark:hover:text-neutral-600" href="{{ route('about.index') }}">A propos</a>

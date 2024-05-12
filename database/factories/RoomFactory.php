@@ -18,7 +18,7 @@ class RoomFactory extends Factory
         return [
             'label' => $this->faker->word,
             'description' => $this->faker->paragraph,
-            'picture' => $this->faker->imageUrl(640, 480, 'room', true)
+            'picture' => $this->faker->imageUrl(640, 480, 'rooms', true)
         ];
     }
 }

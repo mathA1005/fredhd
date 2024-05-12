@@ -16,7 +16,7 @@ Route::get('/dashboard', function () {
 Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
     Route::get('/reservations', [ReservationController::class, 'index'])->name('admin.index');
     // Ajoutez d'autres routes administratives ici
-    Route::post('/chambre', [RoomController::class, 'store'])->name('chambre.store');
+    Route::post('/rooms', [RoomController::class, 'store'])->name('rooms.store');
 
 });
 
@@ -32,14 +32,14 @@ Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/about', [AboutController::class, 'index'])->name('about.index');
 
 // Correction pour utiliser les méthodes du contrôleur ChambreController
-Route::get('/chambre', [RoomController::class, 'index'])->name('chambre.index');
-Route::get('/chambre/create', [RoomController::class, 'create'])->name('chambre.create');
-Route::get('/chambre/{id}', [RoomController::class, 'show'])->name('chambre.show');
-Route::get('/chambres/{chambre}/availability', [RoomController::class, 'checkAvailability'])->name('chambres.checkAvailability');
+Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');
+Route::get('/rooms/create', [RoomController::class, 'create'])->name('rooms.create');
+Route::get('/rooms/{id}', [RoomController::class, 'show'])->name('rooms.show');
+Route::get('/chambres/{rooms}/availability', [RoomController::class, 'checkAvailability'])->name('chambres.checkAvailability');
 
-Route::get('/equipements', [RoomOptionsController::class, 'index'])->name('equipements.index');
-Route::get('/equipements/create', [RoomOptionsController::class, 'create'])->name('equipements.create');
-Route::post('/equipements', [RoomOptionsController::class, 'store'])->name('equipements.store');
+Route::get('/options', [RoomOptionsController::class, 'index'])->name('options.index');
+Route::get('/options/create', [RoomOptionsController::class, 'create'])->name('options.create');
+Route::post('/options', [RoomOptionsController::class, 'store'])->name('options.store');
 
 Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
 
