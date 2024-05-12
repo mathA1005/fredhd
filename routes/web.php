@@ -14,7 +14,8 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
-    Route::get('/reservations', [ReservationController::class, 'index'])->name('admin.index');
+    Route::get('/', [ReservationController::class, 'index'])->name('admin.index');
+
     // Ajoutez d'autres routes administratives ici
     Route::post('/rooms', [RoomController::class, 'store'])->name('rooms.store');
 
@@ -42,6 +43,7 @@ Route::get('/options/create', [RoomOptionsController::class, 'create'])->name('o
 Route::post('/options', [RoomOptionsController::class, 'store'])->name('options.store');
 
 Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
+Route::post('/contact', [ContactController::class, 'submitForm'])->name('contact.submit');
 
 // Auth routes
 require __DIR__.'/auth.php';

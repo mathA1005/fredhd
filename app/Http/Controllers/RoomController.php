@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Gate;
 
 class RoomController extends Controller
 {
-    public function index()
+
+        public function index()
     {
         $rooms = Room::paginate(10);
         $rooms = Room::with('roomOptions')->get(); // Récupère les options associées

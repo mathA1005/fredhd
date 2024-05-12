@@ -15,7 +15,7 @@ class ReservationController extends Controller
     }
     public function index(): View
     {
-        $reservations = Reservation::with('rooms')->get();
+        $reservations = Reservation::with('room')->get();
 
         return view('admin.index', [
             'reservations' => $reservations
