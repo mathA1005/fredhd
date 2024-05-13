@@ -53,26 +53,29 @@ class RoomController extends Controller
         // Stocker le fichier photo et obtenir le chemin
         $path = $request->file('picture')->store('public/chambres');
 
-        // Créer la nouvelle rooms avec les données validées
         $room = new Room();
         $room->label = $validatedData['label'];
         $room->description = $validatedData['description'];
         $room->picture = $path;
-        $room->save(); // Sauvegarder la rooms avant de synchroniser les équipements
+        $room->save(); // Sauvegarder la room avant de synchroniser les équipements
 
-        // Vérifier si des équipements ont été fournis et les synchroniser
         if ($request->has('roomOptions')) {
-            $room->roomOptions()->sync($request->input('roomOptions'));
+            $values = $request->input('roomOptionsValues', []);
+            $syncData = [];
+
+            foreach ($request->input('roomOptions') as $optionId) {
+                $value = isset($values[$optionId]) ? $values[$optionId] : null; // Utilisez une valeur par défaut si nécessaire
+                if ($value !== null) { // S'assurer que la valeur n'est pas null
+                    $syncData[$optionId] = ['value' => $value];
+                }
+            }
+
+            $room->roomOptions()->sync($syncData);
         }
 
-        $roomOptions = roomOptions::all();
-
-        // Rediriger vers la même vue de création avec un message de succès
         return redirect()->route('rooms.create')->with([
-            'success' => 'Room créée avec succès.',
-            'roomOption' => $roomOptions  // Assurer que les équipements sont de nouveau disponibles pour la vue
+            'success' => 'Room créée avec succès.'
         ]);
-
     }
 
 

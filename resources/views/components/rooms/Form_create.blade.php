@@ -26,11 +26,12 @@
         </div>
 
         @foreach ($roomOptions as $roomOption)
-            <div>
+            <div class="mb-4">
                 <label class="inline-flex items-center">
                     <input type="checkbox" class="form-checkbox text-indigo-600" name="roomOptions[]" value="{{ $roomOption->id }}">
                     <span class="ml-2">{{ $roomOption->label }}</span>
                 </label>
+                <input type="text" name="roomOptionsValues[{{ $roomOption->id }}]" placeholder="Valeur pour {{ $roomOption->label }}" class="mt-2 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
         @endforeach
 

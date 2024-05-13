@@ -3,9 +3,12 @@
 @section('content')
     <x-contact.form />
     <title>Carte Google Maps</title>
+    </head>
+    <div class="full bg-black p-4"
+
     <body class="flex items-center justify-center min-h-screen bg-gray-100">
-    <div class="flex flex-col lg:flex-row items-stretch justify-center w-full">
-        <!-- Conteneur de la carte avec une hauteur maximale plus petite -->
+    <div class="flex flex-col lg:flex-row items-stretch justify-center w-full gap-4 lg:gap-8">
+        <!-- Conteneur de la carte avec une hauteur maximale plus petite et une marge à droite -->
         <div class="w-full lg:w-1/2 flex items-stretch max-h-72 lg:max-h-80">
             <iframe
                 class="w-full h-full"
@@ -13,10 +16,12 @@
             ></iframe>
         </div>
         <!-- Conteneur de l'image adjacente avec une hauteur maximale plus petite -->
-        <div class="w-full lg:w-1/2 flex items-stretch max-h-72 lg:max-h-80 ">
-
-            <img src="/storage/picture/IMG_20230514_174052.jpg" class="w-full h-full object-cover rounded-lg shadow-lg"/>
+        <div class="w-full lg:w-1/2 flex items-stretch max-h-72 lg:max-h-80">
+            <img src="/storage/picture/IMG_20230514_174052.jpg" class="w-full h-full object-cover shadow-lg"/>
         </div>
     </div>
+
+    </div>
     </body>
+
 @endsection
