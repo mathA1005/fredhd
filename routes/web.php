@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\FAQController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomOptionsController;
@@ -10,13 +11,21 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReservationController;
 
 Route::get('/dashboard', function () {
-    return view('dashboard');})->middleware(['auth', 'verified'])->name('dashboard');
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
     Route::get('/', [ReservationController::class, 'index'])->name('admin.index');
 
     // Ajoutez d'autres routes administratives ici
     Route::post('/rooms', [RoomController::class, 'store'])->name('rooms.store');
+
+    Route::get('faqs', [FAQController::class, 'index'])->name('admin.faqs.index');
+    Route::get('faqs/create', [FAQController::class, 'create'])->name('admin.faqs.create');
+    Route::post('faqs', [FAQController::class, 'store'])->name('admin.faqs.store');
+    Route::get('faqs/{id}/edit', [FAQController::class, 'edit'])->name('admin.faqs.edit');
+    Route::put('faqs/{id}', [FAQController::class, 'update'])->name('admin.faqs.update');
+    Route::delete('faqs/{id}', [FAQController::class, 'destroy'])->name('admin.faqs.destroy');
 
 });
 
@@ -26,6 +35,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('faqs', [FAQController::class, 'showForUsers'])->name('faqs.index');
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
@@ -45,4 +56,4 @@ Route::get('/contact', [ContactController::class, 'index'])->name('contact.index
 Route::post('/contact', [ContactController::class, 'submitForm'])->name('contact.submit');
 
 // Auth routes
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

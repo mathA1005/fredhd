@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\RoomOptions;
 use App\Models\Room;
 use Illuminate\Http\Request;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\Gate;
 class RoomController extends Controller
 {
 
-        public function index()
+    public function index()
     {
         $rooms = Room::paginate(10);
         $rooms = Room::with('roomOptions')->get(); // Récupère les options associées
@@ -20,16 +21,18 @@ class RoomController extends Controller
 
         ]);
     }
+
     public function create()
-    {   if (! Gate::allows('admin')) {
-        abort(403);
-    }
+    {
+        if (!Gate::allows('admin')) {
+            abort(403);
+        }
         $roomOptions = RoomOptions::all();
 
         return view('rooms.create', [
             'roomOptions' => $roomOptions,
-        ]);    }
-
+        ]);
+    }
 
 
     public function show($id)
@@ -38,7 +41,6 @@ class RoomController extends Controller
 
         return view('rooms.show', ['room' => $room]);
     }
-
 
 
     public function store(Request $request)

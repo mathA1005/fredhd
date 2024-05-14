@@ -42,6 +42,9 @@
                 <div>
                     <a class="inline-block text-black hover:text-gray-600 dark:text-neutral-800 dark:hover:text-neutral-600" href="{{ route('contact.index') }}">A Contact</a>
                 </div>
+                <div>
+                    <a class="inline-block text-black hover:text-gray-600 dark:text-neutral-800 dark:hover:text-neutral-600" href="{{ route('faqs.index') }}">Faqs</a>
+                </div>
             </div>
         </div>
         <!-- End Collapse -->

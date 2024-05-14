@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use App\Models\RoomOptions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -7,7 +9,7 @@ use Illuminate\Support\Facades\Gate;
 class RoomOptionsController extends Controller
 {
 
-        public function index()
+    public function index()
     {
         // Récupère toutes les options de salle depuis la base de données
         $roomOptions = RoomOptions::all();
@@ -18,7 +20,7 @@ class RoomOptionsController extends Controller
 
     public function create()
     {
-        if (! Gate::allows('admin')) {
+        if (!Gate::allows('admin')) {
             abort(403);
         }
         return view('options.create');

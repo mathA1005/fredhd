@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Reservation;
@@ -9,10 +10,11 @@ class ReservationController extends Controller
 {
     public function __construct()
     {
-        if (! Gate::allows('admin')) {
+        if (!Gate::allows('admin')) {
             abort(403);
         }
     }
+
     public function index(): View
     {
         $reservations = Reservation::with('room')->get();
