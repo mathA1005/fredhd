@@ -9,7 +9,7 @@
 <body class="bg-gray-100 p-8">
 
 <div class="max-w-lg mx-auto">
-    <form action="{{ route('rooms.store') }}" method="POST" enctype="multipart/form-data" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <form action="{{ route('admin.rooms.store') }}" method="POST" enctype="multipart/form-data" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         @csrf
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="label">

@@ -8,11 +8,11 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::disableForeignKeyConstraints(); //for link between chambres and reservations
+        Schema::disableForeignKeyConstraints(); //for link between rooms and reservations
 
         Schema::dropIfExists('chambre_equipement');
         Schema::dropIfExists('equipements');
-        Schema::dropIfExists('chambres');
+        Schema::dropIfExists('rooms');
 
         Schema::create('room_options', function (Blueprint $table) {
             $table->id();
@@ -45,7 +45,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::disableForeignKeyConstraints(); //for link between chambres and reservations
+        Schema::disableForeignKeyConstraints(); //for link between rooms and reservations
 
         Schema::dropIfExists('rooms_room_options');
         Schema::dropIfExists('rooms');
@@ -58,7 +58,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('chambres', function (Blueprint $table) {
+        Schema::create('rooms', function (Blueprint $table) {
             $table->id();
             $table->string('nom');
             $table->text('description');

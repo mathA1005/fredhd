@@ -14,11 +14,16 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+
 Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
     Route::get('/', [ReservationController::class, 'index'])->name('admin.index');
 
-    // Ajoutez d'autres routes administratives ici
-    Route::post('/rooms', [RoomController::class, 'store'])->name('rooms.store');
+    Route::get('rooms', [RoomController::class, 'adminIndex'])->name('admin.rooms.index');
+    Route::get('rooms/create', [RoomController::class, 'create'])->name('admin.rooms.create');
+    Route::post('rooms', [RoomController::class, 'store'])->name('admin.rooms.store');
+    Route::get('rooms/{room}/edit', [RoomController::class, 'edit'])->name('admin.rooms.edit');
+    Route::put('rooms/{room}', [RoomController::class, 'update'])->name('admin.rooms.update');
+
 
     Route::get('faqs', [FAQController::class, 'index'])->name('admin.faqs.index');
     Route::get('faqs/create', [FAQController::class, 'create'])->name('admin.faqs.create');
@@ -34,6 +39,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    //route pour la réservation
+
+
 });
 
 Route::get('faqs', [FAQController::class, 'showForUsers'])->name('faqs.index');
@@ -44,9 +52,8 @@ Route::get('/about', [AboutController::class, 'index'])->name('about.index');
 
 // Correction pour utiliser les méthodes du contrôleur ChambreController
 Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');
-Route::get('/rooms/create', [RoomController::class, 'create'])->name('rooms.create');
 Route::get('/rooms/{id}', [RoomController::class, 'show'])->name('rooms.show');
-Route::get('/chambres/{rooms}/availability', [RoomController::class, 'checkAvailability'])->name('chambres.checkAvailability');
+Route::get('/rooms/{rooms}/availability', [RoomController::class, 'checkAvailability'])->name('rooms.checkAvailability');
 
 Route::get('/options', [RoomOptionsController::class, 'index'])->name('options.index');
 Route::get('/options/create', [RoomOptionsController::class, 'create'])->name('options.create');

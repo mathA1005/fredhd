@@ -13,7 +13,7 @@ class RoomController extends Controller
 
     public function index()
     {
-        $rooms = Room::paginate(10);
+        $rooms = Room::with('roomOptions')->paginate(10); // Pagination ajoutée
         $rooms = Room::with('roomOptions')->get(); // Récupère les options associées
 
         return view('rooms.index', [
@@ -29,7 +29,7 @@ class RoomController extends Controller
         }
         $roomOptions = RoomOptions::all();
 
-        return view('rooms.create', [
+        return view('admin.rooms.create', [
             'roomOptions' => $roomOptions,
         ]);
     }
@@ -40,6 +40,62 @@ class RoomController extends Controller
         $room = Room::findOrFail($id);
 
         return view('rooms.show', ['room' => $room]);
+    }
+
+    public function edit($id)
+    {
+        $room = Room::findOrFail($id);
+
+        if (!Gate::allows('admin')) {
+            abort(403);
+        }
+
+        $roomOptions = RoomOptions::all();
+        $roomOptionsValues = $room->roomOptions->pluck('pivot.value', 'id')->toArray();
+
+        return view('admin.rooms.edit', [
+            'room' => $room,
+            'roomOptions' => $roomOptions,
+            'roomOptionsValues' => $roomOptionsValues,
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Valider les données du formulaire
+        $validatedData = $request->validate([
+            'label' => 'required|max:255',
+            'description' => 'required',
+            'picture' => 'nullable|image',
+        ]);
+
+        $room = Room::findOrFail($id);
+        $room->label = $validatedData['label'];
+        $room->description = $validatedData['description'];
+
+        if ($request->hasFile('picture')) {
+            // Stocker le fichier photo et obtenir le chemin
+            $path = $request->file('picture')->store('public/rooms');
+            $room->picture = $path;
+        }
+
+        $room->save(); // Sauvegarder les modifications
+
+        if ($request->has('roomOptions')) {
+            $values = $request->input('roomOptionsValues', []);
+            $syncData = [];
+
+            foreach ($request->input('roomOptions') as $optionId) {
+                $value = isset($values[$optionId]) ? $values[$optionId] : null; // Utilisez une valeur par défaut si nécessaire
+                if ($value !== null) { // S'assurer que la valeur n'est pas null
+                    $syncData[$optionId] = ['value' => $value];
+                }
+            }
+
+            $room->roomOptions()->sync($syncData);
+        }
+
+        return redirect()->route('admin.rooms.index')->with('success', 'Room mise à jour avec succès.');
     }
 
 
@@ -53,7 +109,7 @@ class RoomController extends Controller
         ]);
 
         // Stocker le fichier photo et obtenir le chemin
-        $path = $request->file('picture')->store('public/chambres');
+        $path = $request->file('picture')->store('public/rooms');
 
         $room = new Room();
         $room->label = $validatedData['label'];
@@ -75,10 +131,20 @@ class RoomController extends Controller
             $room->roomOptions()->sync($syncData);
         }
 
-        return redirect()->route('rooms.create')->with([
-            'success' => 'Room créée avec succès.'
-        ]);
+        return redirect()->route('admin.rooms.create')->with('success', 'Room créée avec succès.');
+
+
     }
 
+    public function adminIndex()
+    {
+        if (!Gate::allows('admin')) {
+            abort(403);
+        }
+        $rooms = Room::with('roomOptions')->paginate(10);
 
+        return view('admin.rooms.index', [
+            'rooms' => $rooms,
+        ]);
+    }
 }
