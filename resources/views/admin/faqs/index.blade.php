@@ -1,9 +1,8 @@
 @extends('admin.layout')
 @section('content')
-
-    <h1 class="text-2xl font-bold">Liste des FAQs</h1>
-        <a href="{{ route('admin.faqs.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded">Ajouter une FAQ</a>
-    </div>
+    <body class="bg-gray-100 p-8">
+    <h1 class="text-2xl font-bold mb-4">Liste des FAQs</h1>
+    <a href="{{ route('admin.faqs.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded mb-4 inline-block">Ajouter une FAQ</a>
 
     @if (session('success'))
         <div class="bg-green-500 text-white p-4 rounded mb-4">
@@ -11,30 +10,32 @@
         </div>
     @endif
 
-    <table class="min-w-full bg-white">
-        <thead>
-        <tr>
-            <th class="py-2">Question</th>
-            <th class="py-2">Réponse</th>
-            <th class="py-2">Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach ($faqs as $faq)
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white rounded-lg shadow-md">
+            <thead>
             <tr>
-                <td class="border px-4 py-2">{{ $faq->question }}</td>
-                <td class="border px-4 py-2">{{ $faq->answer }}</td>
-                <td class="border px-4 py-2 flex space-x-2">
-                    <a href="{{ route('admin.faqs.edit', $faq->id) }}"
-                       class="bg-yellow-500 text-white px-4 py-2 rounded">Modifier</a>
-                    <form action="{{ route('admin.faqs.destroy', $faq->id) }}" method="POST" class="inline-block">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Supprimer</button>
-                    </form>
-                </td>
+                <th class="py-2 px-4 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">Question</th>
+                <th class="py-2 px-4 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">Réponse</th>
+                <th class="py-2 px-4 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">Actions</th>
             </tr>
-        @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            @foreach ($faqs as $faq)
+                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                    <td class="px-4 py-2 break-words max-w-xs">{{ $faq->question }}</td>
+                    <td class="px-4 py-2 break-words max-w-xs">{{ $faq->answer }}</td>
+                    <td class="px-4 py-2 flex space-x-2">
+                        <a href="{{ route('admin.faqs.edit', $faq->id) }}" class="bg-yellow-500 text-white px-4 py-2 rounded">Modifier</a>
+                        <form action="{{ route('admin.faqs.destroy', $faq->id) }}" method="POST" class="inline-block">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+    </div>
+    </body>
 @endsection

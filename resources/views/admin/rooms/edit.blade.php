@@ -1,4 +1,5 @@
-
+@extends('admin.layout')
+@section('content')
     <div class="container">
         <h1>Edit Room</h1>
 
@@ -51,3 +52,4 @@
             <button type="submit" class="btn btn-primary">Update Room</button>
         </form>
     </div>
+@endsection

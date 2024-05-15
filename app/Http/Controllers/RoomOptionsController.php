@@ -40,7 +40,7 @@ class RoomOptionsController extends Controller
         $roomOptions->label = $request->label; // Assignation de la description
         $roomOptions->save();
 
-        return redirect()->route('options.index');
+        return redirect()->route('admin.options.index');
     }
     public function adminIndex()
     {
