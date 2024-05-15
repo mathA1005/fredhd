@@ -4,15 +4,74 @@
     <div class="container mx-auto px-4 py-8">
         <h1 class="text-2xl font-bold mb-4">Liste des Réservations</h1>
 
+        <!-- Barre de recherche -->
+        <form method="GET" action="{{ route('admin.index') }}" class="mb-4">
+            <input type="text" name="search" placeholder="Rechercher par nom de chambre ou d'utilisateur"
+                   value="{{ request('search') }}"
+                   class="px-4 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300">
+            <input type="date" name="start_date" value="{{ request('start_date') }}"
+                   class="px-4 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300">
+            <button type="submit"
+                    class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring">
+                Rechercher
+            </button>
+        </form>
+
         <div class="overflow-x-auto">
             <table class="min-w-full bg-white rounded-lg shadow-md">
                 <thead>
                 <tr>
-                    <th class="py-2 px-4 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">ID Chambre</th>
-                    <th class="py-2 px-4 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">Nom Chambre</th>
-                    <th class="py-2 px-4 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">Utilisateur</th>
-                    <th class="py-2 px-4 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">Date de Début</th>
-                    <th class="py-2 px-4 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">Date de Fin</th>
+                    <th class="py-2 px-4 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
+                        <a href="{{ route('admin.index', array_merge(request()->query(), ['sort_by' => 'room_id', 'order' => request('order') == 'asc' ? 'desc' : 'asc'])) }}">
+                            ID Chambre
+                            @if (request('sort_by') == 'room_id')
+                                @if (request('order') == 'asc')
+                                    &#9650;
+                                @else
+                                    &#9660;
+                                @endif
+                            @endif
+                        </a>
+                    </th>
+                    <th class="py-2 px-4 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
+                        Nom Chambre
+                    </th>
+                    <th class="py-2 px-4 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
+                        <a href="{{ route('admin.index', array_merge(request()->query(), ['sort_by' => 'user_name', 'order' => request('order') == 'asc' ? 'desc' : 'asc'])) }}">
+                            Utilisateur
+                            @if (request('sort_by') == 'user_name')
+                                @if (request('order') == 'asc')
+                                    &#9650;
+                                @else
+                                    &#9660;
+                                @endif
+                            @endif
+                        </a>
+                    </th>
+                    <th class="py-2 px-4 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
+                        <a href="{{ route('admin.index', array_merge(request()->query(), ['sort_by' => 'start_date', 'order' => request('order') == 'asc' ? 'desc' : 'asc'])) }}">
+                            Date de Début
+                            @if (request('sort_by') == 'start_date')
+                                @if (request('order') == 'asc')
+                                    &#9650;
+                                @else
+                                    &#9660;
+                                @endif
+                            @endif
+                        </a>
+                    </th>
+                    <th class="py-2 px-4 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
+                        <a href="{{ route('admin.index', array_merge(request()->query(), ['sort_by' => 'end_date', 'order' => request('order') == 'asc' ? 'desc' : 'asc'])) }}">
+                            Date de Fin
+                            @if (request('sort_by') == 'end_date')
+                                @if (request('order') == 'asc')
+                                    &#9650;
+                                @else
+                                    &#9660;
+                                @endif
+                            @endif
+                        </a>
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
