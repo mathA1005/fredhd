@@ -23,7 +23,7 @@ class RoomOptionsController extends Controller
         if (!Gate::allows('admin')) {
             abort(403);
         }
-        return view('options.create');
+        return view('admin.options.create');
     }
 
     public function store(Request $request)
@@ -41,6 +41,19 @@ class RoomOptionsController extends Controller
         $roomOptions->save();
 
         return redirect()->route('options.index');
+    }
+    public function adminIndex()
+    {
+        // Vérification si l'utilisateur est un administrateur
+        if (!Gate::allows('admin')) {
+            abort(403);
+        }
+
+        // Récupère toutes les options de salle depuis la base de données
+        $roomOptions = RoomOptions::all();
+
+        // Passe les options à la vue "admin.index.blade.php"
+        return view('admin.options.index', ['roomOptions' => $roomOptions]);
     }
 
 }

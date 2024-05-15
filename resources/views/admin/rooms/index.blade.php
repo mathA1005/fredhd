@@ -1,3 +1,5 @@
+@extends('admin.layout')
+@section('content')
 
     <div class="container">
         <h1>Rooms</h1>
@@ -36,3 +38,4 @@
 
         {{ $rooms->links() }}
     </div>
+@endsection

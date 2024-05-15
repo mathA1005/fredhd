@@ -1,6 +1,7 @@
-<div class="container mx-auto">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold">Liste des FAQs</h1>
+@extends('admin.layout')
+@section('content')
+
+    <h1 class="text-2xl font-bold">Liste des FAQs</h1>
         <a href="{{ route('admin.faqs.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded">Ajouter une FAQ</a>
     </div>
 
@@ -36,4 +37,4 @@
         @endforeach
         </tbody>
     </table>
-</div>
+@endsection

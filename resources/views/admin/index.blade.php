@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Liste des Réservations</title>
-</head>
-<body>
+
+@extends('admin.layout')
+@section('content')
+
 <h1>Liste des Réservations</h1>
 <table>
     <thead>
@@ -30,5 +27,4 @@
 
     </tbody>
 </table>
-</body>
-</html>
+@endsection

@@ -7,7 +7,7 @@
 <body>
 <div class="container">
     <h1>Ajouter un nouvel équipement</h1>
-    <form method="POST" action="{{ route('options.store') }}">
+    <form action="{{ route('admin.options.store') }}" method="POST">
         @csrf
         <label for="icon">Nom de l'équipement:</label>
         <input type="text" id="icon" name="icon" required>
