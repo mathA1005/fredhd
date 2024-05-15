@@ -27,6 +27,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
     Route::get('options', [RoomOptionsController::class, 'adminIndex'])->name('admin.options.index');
     Route::get('options/create', [RoomOptionsController::class, 'create'])->name('admin.options.create');
     Route::post('options', [RoomOptionsController::class, 'store'])->name('admin.options.store');
+    Route::get('options/{id}/edit', [RoomOptionsController::class, 'edit'])->name('admin.options.edit');
+    Route::put('options/{id}', [RoomOptionsController::class, 'update'])->name('admin.options.update');
 
     Route::get('faqs', [FAQController::class, 'index'])->name('admin.faqs.index');
     Route::get('faqs/create', [FAQController::class, 'create'])->name('admin.faqs.create');
