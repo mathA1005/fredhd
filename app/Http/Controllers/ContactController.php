@@ -10,9 +10,9 @@ class ContactController extends Controller
     public function index()
     {
         $contacts = Contact::all();
-        return view('contact',
-            ['contacts' => $contacts]);
+        return view('contact', ['contacts' => $contacts]);
     }
+
     public function submitForm(Request $request)
     {
         // Valider les entrées
@@ -24,6 +24,7 @@ class ContactController extends Controller
             'description' => 'required|string|max:500',
         ]);
 
+        // Enregistrer le contact dans la base de données
         Contact::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
@@ -32,8 +33,10 @@ class ContactController extends Controller
             'description' => $request->description,
             'status' => 'untreated' // Statut par défaut
         ]);
+
         return redirect('/contact')->with('success', 'Formulaire soumis avec succès!');
     }
+
     public function updateStatus(Request $request, $id)
     {
         $contact = Contact::findOrFail($id);
@@ -52,11 +55,16 @@ class ContactController extends Controller
         $sort = $request->query('sort', 'created_at'); // Par défaut, trier par date de création
         $order = $request->query('order', 'asc'); // Par défaut, ordre ascendant
         $status = $request->query('status', ''); // Par défaut, pas de filtre de statut
+        $search = $request->query('search', ''); // Recherche par prénom
 
         $query = Contact::orderBy($sort, $order);
 
         if ($status) {
             $query->where('status', $status);
+        }
+
+        if ($search) {
+            $query->where('last_name', 'like', '%' . $search . '%');
         }
 
         $contacts = $query->get();
@@ -65,9 +73,8 @@ class ContactController extends Controller
             'contacts' => $contacts,
             'sort' => $sort,
             'order' => $order,
-            'status' => $status
+            'status' => $status,
+            'search' => $search
         ]);
     }
-
-
 }

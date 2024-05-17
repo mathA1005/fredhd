@@ -12,14 +12,16 @@
 
         <div class="mb-4">
             <form action="{{ route('admin.contacts.index') }}" method="GET" class="mb-4">
-                <div class="flex items-center">
+                <div class="flex items-center mb-4">
+                    <label for="search" class="mr-2">Rechercher par nom:</label>
+                    <input type="text" name="search" id="search" value="{{ request('search') }}" class="border rounded p-2 mr-4">
                     <label for="status" class="mr-2">Filtrer par statut:</label>
                     <select name="status" id="status" class="border rounded p-2 mr-4">
                         <option value="">Tous</option>
-                        <option value="untreated" {{ $status == 'untreated' ? 'selected' : '' }}>Untreated</option>
-                        <option value="in process" {{ $status == 'in process' ? 'selected' : '' }}>In process</option>
-                        <option value="treated" {{ $status == 'treated' ? 'selected' : '' }}>Treated</option>
-                        <option value="close" {{ $status == 'close' ? 'selected' : '' }}>Close</option>
+                        <option value="untreated" {{ request('status') == 'untreated' ? 'selected' : '' }}>Untreated</option>
+                        <option value="in process" {{ request('status') == 'in process' ? 'selected' : '' }}>In process</option>
+                        <option value="treated" {{ request('status') == 'treated' ? 'selected' : '' }}>Treated</option>
+                        <option value="close" {{ request('status') == 'close' ? 'selected' : '' }}>Close</option>
                     </select>
                     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Filtrer</button>
                 </div>
