@@ -38,6 +38,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
     Route::delete('faqs/{id}', [FAQController::class, 'destroy'])->name('admin.faqs.destroy');
 
     Route::get('contacts', [ContactController::class, 'adminIndex'])->name('admin.contacts.index');
+    Route::put('/admin/contacts/{id}/status', [ContactController::class, 'updateStatus'])->name('admin.contacts.updateStatus');
 
 });
 
