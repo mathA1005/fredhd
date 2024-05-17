@@ -20,7 +20,7 @@ class ContactController extends Controller
             'first_name' => 'required|string|max:50',
             'last_name' => 'required|string|max:50',
             'email' => 'required|email',
-            'phone' => 'nullable|string|max:15',
+            'phone' => 'nullable|string|max:15|regex:/^\+?\d+$/',
             'description' => 'required|string|max:500',
         ]);
 

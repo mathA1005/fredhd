@@ -92,7 +92,7 @@
                         </td>
                         <td class="border px-4 py-2">{{ $contact->created_at->format('d/m/Y H:i') }}</td>
                         <td class="border px-4 py-2">
-                            <a href="mailto:{{ $contact->email }}?subject=Re: Votre demande" class="bg-blue-500 text-white px-4 py-2 rounded">Répondre par mail</a>
+                            <a href="mailto:{{ $contact->email }}?subject=Re: Votre demande" class="bg-blue-500 text-white px-4 py-2 rounded">Répondre</a>
                         </td>
                     </tr>
                 @endforeach
