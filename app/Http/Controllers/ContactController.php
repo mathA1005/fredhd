@@ -29,7 +29,11 @@ class ContactController extends Controller
 
         return redirect('/contact')->with('success', 'Formulaire soumis avec succès!');
     }
-
+    public function adminIndex()
+    {
+        $contacts = Contact::all();
+        return view('admin.contacts.index', ['contacts' => $contacts]);
+    }
 
 
 }

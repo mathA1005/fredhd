@@ -14,11 +14,11 @@
 </head>
 <body class="flex bg-white">
 <!-- Sidebar -->
-<div class="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 min-h-screen">
+<div class="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 min-h-screen fixed top-0 h-full">
     <div class="p-4">
         <!-- Logo -->
         <a class="text-xl font-semibold text-gray-900 dark:text-white" href="{{ url('/admin') }}">
-            Admin
+            <img src="{{ asset('storage/picture/fred.png') }}" alt="Admin" class="inline-block h-26 w-26 mr-2">
         </a>
         <!-- End Logo -->
     </div>
@@ -39,12 +39,16 @@
            class="flex items-center p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg">
             FAQS
         </a>
+        <a href="{{ url('admin/contacts') }}"
+           class="flex items-center p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg">
+            Contacts
+        </a>
         <!-- Ajoutez d'autres liens ici -->
     </nav>
 </div>
 
 <!-- Main Content -->
-<div class="flex-1 p-4">
+<div class="flex-1 p-4 ml-64">
     @yield('content')
 </div>
 

@@ -7,18 +7,15 @@ use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
-
 class RoomController extends Controller
 {
-
     public function index()
     {
-        $rooms = Room::with('roomOptions')->paginate(10); // Pagination ajoutée
-        $rooms = Room::with('roomOptions')->get(); // Récupère les options associées
+        // Pagination ajoutée et récupération des options associées
+        $rooms = Room::with('roomOptions')->paginate(10);
 
         return view('rooms.index', [
             'rooms' => $rooms,
-
         ]);
     }
 
@@ -27,13 +24,13 @@ class RoomController extends Controller
         if (!Gate::allows('admin')) {
             abort(403);
         }
+
         $roomOptions = RoomOptions::all();
 
         return view('admin.rooms.create', [
             'roomOptions' => $roomOptions,
         ]);
     }
-
 
     public function show($id)
     {
@@ -62,7 +59,7 @@ class RoomController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Valider les données du formulaire
+        // Validation des données du formulaire
         $validatedData = $request->validate([
             'label' => 'required|max:255',
             'description' => 'required',
@@ -86,8 +83,8 @@ class RoomController extends Controller
             $syncData = [];
 
             foreach ($request->input('roomOptions') as $optionId) {
-                $value = isset($values[$optionId]) ? $values[$optionId] : null; // Utilisez une valeur par défaut si nécessaire
-                if ($value !== null) { // S'assurer que la valeur n'est pas null
+                $value = isset($values[$optionId]) ? $values[$optionId] : null; // Utiliser une valeur par défaut si nécessaire
+                if ($value !== null) { // S'assurer que la valeur n'est pas nulle
                     $syncData[$optionId] = ['value' => $value];
                 }
             }
@@ -98,10 +95,9 @@ class RoomController extends Controller
         return redirect()->route('admin.rooms.index')->with('success', 'Room mise à jour avec succès.');
     }
 
-
     public function store(Request $request)
     {
-        // Valider les données du formulaire
+        // Validation des données du formulaire
         $validatedData = $request->validate([
             'label' => 'required|max:255',
             'description' => 'required',
@@ -122,8 +118,8 @@ class RoomController extends Controller
             $syncData = [];
 
             foreach ($request->input('roomOptions') as $optionId) {
-                $value = isset($values[$optionId]) ? $values[$optionId] : null; // Utilisez une valeur par défaut si nécessaire
-                if ($value !== null) { // S'assurer que la valeur n'est pas null
+                $value = isset($values[$optionId]) ? $values[$optionId] : null; // Utiliser une valeur par défaut si nécessaire
+                if ($value !== null) { // S'assurer que la valeur n'est pas nulle
                     $syncData[$optionId] = ['value' => $value];
                 }
             }
@@ -132,8 +128,6 @@ class RoomController extends Controller
         }
 
         return redirect()->route('admin.rooms.create')->with('success', 'Room créée avec succès.');
-
-
     }
 
     public function adminIndex()
@@ -141,6 +135,7 @@ class RoomController extends Controller
         if (!Gate::allows('admin')) {
             abort(403);
         }
+
         $rooms = Room::with('roomOptions')->paginate(10);
 
         return view('admin.rooms.index', [

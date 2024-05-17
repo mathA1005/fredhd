@@ -37,6 +37,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
     Route::put('faqs/{id}', [FAQController::class, 'update'])->name('admin.faqs.update');
     Route::delete('faqs/{id}', [FAQController::class, 'destroy'])->name('admin.faqs.destroy');
 
+    Route::get('contacts', [ContactController::class, 'adminIndex'])->name('admin.contacts.index');
+
 });
 
 // Groupe de routes protégées par authentification pour le ProfileController
