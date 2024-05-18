@@ -15,6 +15,12 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="container mx-auto">
+@if (Session::has('error'))
+    <x-notifications.toast type="error"/>
+@endif
+@if (Session::has('success'))
+    <x-notifications.toast type="success"/>
+@endif
 <x-nav.nav/>
 
 <!-- Page Content -->

@@ -3,22 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reservation;
-use Illuminate\Http\Request;
-use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Gate;
+use App\Models\Role;
+use App\Models\Room;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class ReservationController extends Controller
 {
-    public function __construct()
-    {
-        if (!Gate::allows('admin')) {
-            abort(403);
-        }
-    }
-
     public function index(Request $request): View
     {
+        if (!Gate::allows(Role::ADMIN)) {
+            abort(403);
+        }
+
         $query = Reservation::with('room', 'user');
 
         // Filtrage par nom de chambre ou par nom d'utilisateur
@@ -59,5 +62,134 @@ class ReservationController extends Controller
         return view('admin.index', [
             'reservations' => $reservations
         ]);
+    }
+
+    public function show(int $id)
+    {
+        $room = Room::with('roomOptions')->findOrFail($id);
+        $roomOptions = $room->roomOptions
+            ->where('label', '!=', 'area')
+            ->where('label', '!=', 'bed_type');
+
+        return view(
+            'reservation.index',
+            [
+                'room' => $room,
+                'roomOptions' => $roomOptions,
+            ]
+        );
+    }
+
+    public function store(Request $request)
+    {
+        if (!Auth::check()) {
+            return to_route('login');
+        }
+
+        $room_id = $request->get('room');
+        $days = $request->get('dates');
+        $arr_dates = explode(' - ', $days);
+        $start_date = Carbon::createFromFormat('d/m/Y', $arr_dates[0], 'Europe/Brussels');
+        $end_date = Carbon::createFromFormat('d/m/Y', $arr_dates[1], 'Europe/Brussels');
+
+        $reserved = Reservation::query()->whereDate('start_date', '>=', $start_date)
+            ->whereDate('end_date', '<=', $end_date)
+            ->where('room_id', $room_id)
+            ->exists();
+
+        if ($reserved) {
+            Session::flash('error', "Impossible de faire cette réservation car déjà réservé");
+            return redirect()->back();
+        }
+
+        Reservation::create(
+            [
+                'user_id' => Auth::user()->id,
+                'start_date' => $start_date,
+                'end_date' => $end_date,
+                'room_id' => $room_id,
+            ]
+        );
+
+        Session::flash(
+            'success',
+            "Votre réservation a bien été enregistrée ! N\'oubliez pas de faire le virement.<br> Merci et à bientôt"
+        );
+        return redirect()->route('home.index');
+    }
+
+    public function createFromAdmin()
+    {
+        if (!Gate::allows(Role::ADMIN)) {
+            abort(403);
+        }
+
+        $users = User::all();
+        $rooms = Room::all();
+
+        return view(
+            'admin.reservation.create',
+            [
+                'users' => $users,
+                'rooms' => $rooms,
+            ]
+        );
+    }
+
+    public function storeFromAdmin(Request $request)
+    {
+        if (!Gate::allows(Role::ADMIN)) {
+            abort(403);
+        }
+
+        $user_id = $request->get('user_id');
+
+        $name = $request->get('name');
+        $password = Hash::make(config('app.default_user.user_password'));
+        $email = $request->get('email');
+
+        $room_id = $request->get('room_id');
+        $days = $request->get('dates');
+        $arr_dates = explode(' - ', $days);
+        $start_date = Carbon::createFromFormat('d/m/Y', $arr_dates[0], 'Europe/Brussels');
+        $end_date = Carbon::createFromFormat('d/m/Y', $arr_dates[1], 'Europe/Brussels');
+
+        $reserved = Reservation::query()->whereDate('start_date', '>=', $start_date)
+            ->whereDate('end_date', '<=', $end_date)
+            ->where('room_id', $room_id)
+            ->exists();
+
+        if ($reserved) {
+            Session::flash('error', "Impossible de faire cette réservation car déjà réservé");
+            return redirect()->back();
+        }
+
+        if (!$user_id) {
+            $user = User::create(
+                [
+                    'name' => $name,
+                    'password' => $password,
+                    'email' => $email,
+                    'role_id' => Role::where('name', Role::USER)->first()->id,
+                ]
+            );
+
+            $user_id = $user->id;
+        }
+
+        Reservation::create(
+            [
+                'user_id' => $user_id,
+                'start_date' => $start_date,
+                'end_date' => $end_date,
+                'room_id' => $room_id,
+            ]
+        );
+
+        Session::flash(
+            'success',
+            "Votre réservation a bien été enregistrée ! N\'oubliez pas de faire le virement.<br> Merci et à bientôt"
+        );
+        return redirect()->route('admin.index');
     }
 }

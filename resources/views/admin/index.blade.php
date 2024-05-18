@@ -15,8 +15,10 @@
                     class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring">
                 Rechercher
             </button>
+            <div class="px-4 py-2 bg-blue-500 text-white w-1/4 rounded-md text-center inline hover:bg-blue-600">
+                <a href="{{ route('admin.reservation.createFromAdmin') }}">Créer une nouvelle réservation</a>
+            </div>
         </form>
-
         <div class="overflow-x-auto">
             <table class="min-w-full bg-white rounded-lg shadow-md">
                 <thead>

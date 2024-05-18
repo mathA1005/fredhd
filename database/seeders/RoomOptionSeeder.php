@@ -26,7 +26,7 @@ class RoomOptionSeeder extends Seeder
         ],
         [
             'label' => 'parking',
-            'icon' => 'parking'
+            'icon' => 'square-parking'
         ],
         [
             'label' => 'coffee',

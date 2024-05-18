@@ -126,5 +126,6 @@ return [
     'default_user' => [
         'email'    => env('APP_DEFAULT_USER_EMAIL', 'admin@example.com'),
         'password' => env('APP_DEFAULT_PASSWORD', 'admin'),
+        'user_password' => env('APP_DEFAULT_USER_PASSWORD', 'user_guest_password'),
     ]
 ];

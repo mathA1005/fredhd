@@ -40,6 +40,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
     Route::get('contacts', [ContactController::class, 'adminIndex'])->name('admin.contacts.index');
     Route::put('/admin/contacts/{id}/status', [ContactController::class, 'updateStatus'])->name('admin.contacts.updateStatus');
 
+    Route::get('/reservation', [ReservationController::class, 'createFromAdmin'])->name('admin.reservation.createFromAdmin');
+    Route::post('/reservation', [ReservationController::class, 'storeFromAdmin'])->name('admin.reservation.storeFromAdmin');
 });
 
 // Groupe de routes protégées par authentification pour le ProfileController
@@ -57,6 +59,9 @@ Route::get('faqs', [FAQController::class, 'showForUsers'])->name('faqs.index');
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
 Route::get('/about', [AboutController::class, 'index'])->name('about.index');
+
+Route::get('/reservation/{id}', [ReservationController::class, 'show'])->name('reservation.show');
+Route::post('/reservation', [ReservationController::class, 'store'])->name('reservation.store');
 
 // Correction pour utiliser les méthodes du contrôleur ChambreController
 Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');

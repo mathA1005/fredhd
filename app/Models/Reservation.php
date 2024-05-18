@@ -8,7 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Reservation extends Model
 {
     use HasFactory;
-
+    protected $fillable = [
+        'user_id',
+        'start_date',
+        'end_date',
+        'room_id'
+    ];
     protected $casts = [
         'start_date' => 'datetime',
         'end_date' => 'datetime',
