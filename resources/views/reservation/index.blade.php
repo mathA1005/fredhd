@@ -103,58 +103,46 @@
         <!-- End Stepper Content -->
     </div>
     <!-- End Stepper -->
+    <!-- Inclure DateRangePicker -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <script type="text/javascript">
-        // $().isInvalidDate({
-        //     "19-05-2024",
-        // });
-        $('input[name="dates"]').daterangepicker({
-            minDate: moment(),
-            isInvalidDate: function(date) {
-                console.log(date);
-                if(date === "19/05/2024")
-                {
-                    return true;
-                    console.log("test");
-                    // return true;
+        $(function() {
+            // Récupérer les dates de réservation depuis le serveur
+            const reservations = @json($reservations);
+
+            // Transformer les dates de réservation en tableau de dates invalides
+            const invalidDates = reservations.map(reservation => {
+                const startDate = moment(reservation.start_date);
+                const endDate = moment(reservation.end_date);
+                const dates = [];
+                while (startDate <= endDate) {
+                    dates.push(startDate.clone().format('DD/MM/YYYY'));
+                    startDate.add(1, 'days');
                 }
-            },
-            "locale":
-                {
-                    "autoApply": true,
-                    "applyLabel": "Appliquer",
-                    "cancelLabel": "Annuler",
-                    "fromLabel": "DE",
-                    "toLabel": "A",
-                    "format": "DD/MM/YYYY",
-                    "daysOfWeek": [
-                        "Di",
-                        "Lu",
-                        "Ma",
-                        "Me",
-                        "Je",
-                        "Ve",
-                        "Sa"
-                    ],
-                    "monthNames": [
-                        "Janvier",
-                        "Février",
-                        "Mars",
-                        "Avril",
-                        "Mai",
-                        "Juin",
-                        "Juillet",
-                        "Août",
-                        "Septembre",
-                        "Octobre",
-                        "Novembre",
-                        "Décembre"
-                    ],
-                    "firstDay": 1
+                return dates;
+            }).flat();
+
+            $('input[name="dates"]').daterangepicker({
+                minDate: moment(),
+                isInvalidDate: function(date) {
+                    return invalidDates.includes(date.format('DD/MM/YYYY'));
+                },
+                locale: {
+                    autoApply: true,
+                    applyLabel: "Appliquer",
+                    cancelLabel: "Annuler",
+                    fromLabel: "DE",
+                    toLabel: "A",
+                    format: "DD/MM/YYYY",
+                    daysOfWeek: ["Di", "Lu", "Ma", "Me", "Je", "Ve", "Sa"],
+                    monthNames: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
+                    firstDay: 1
                 }
+            });
         });
     </script>
+
 @endsection
