@@ -64,11 +64,13 @@ class RoomController extends Controller
             'label' => 'required|max:255',
             'description' => 'required',
             'picture' => 'nullable|image',
+            'price_per_night' => 'required|numeric|min:0',
         ]);
 
         $room = Room::findOrFail($id);
         $room->label = $validatedData['label'];
         $room->description = $validatedData['description'];
+        $room->price_per_night = $validatedData['price_per_night'];
 
         if ($request->hasFile('picture')) {
             // Stocker le fichier photo et obtenir le chemin
@@ -102,6 +104,7 @@ class RoomController extends Controller
             'label' => 'required|max:255',
             'description' => 'required',
             'picture' => 'required|image',
+            'price_per_night' => 'required|numeric|min:0',
         ]);
 
         // Stocker le fichier photo et obtenir le chemin
@@ -111,6 +114,7 @@ class RoomController extends Controller
         $room->label = $validatedData['label'];
         $room->description = $validatedData['description'];
         $room->picture = $path;
+        $room->price_per_night = $validatedData['price_per_night'];
         $room->save(); // Sauvegarder la room avant de synchroniser les équipements
 
         if ($request->has('roomOptions')) {

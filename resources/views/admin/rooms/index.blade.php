@@ -17,6 +17,7 @@
                 <tr>
                     <th class="py-2 px-4 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">Label</th>
                     <th class="py-2 px-4 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">Description</th>
+                    <th class="py-2 px-4 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">Prix par nuit (€)</th>
                     <th class="py-2 px-4 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">Options</th>
                     <th class="py-2 px-4 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">Actions</th>
                 </tr>
@@ -26,6 +27,7 @@
                     <tr class="border-b border-gray-200 hover:bg-gray-50">
                         <td class="px-4 py-2">{{ $room->label }}</td>
                         <td class="px-4 py-2">{{ $room->description }}</td>
+                        <td class="px-4 py-2">{{ number_format($room->price_per_night, 2) }} €</td>
                         <td class="px-4 py-2">
                             @foreach ($room->roomOptions as $option)
                                 <span>{{ $option->name }}: {{ $option->pivot->value }}</span><br>

@@ -15,12 +15,12 @@
                     {{ $room->label }}
 
                 </h3>
-                <p class="mt-1 text-gray-300 dark:text-neutral-200">
-                <ul class="text-gray-300">
-                    <li>Superficie : {{ $room->area }} m²</li>
-                    <li>Nombre de personnes : {{ $room->nb_person }}</li>
-                </ul>
-                </p>
+                <div class="">
+                    <p class="text-xs text-gray-500 dark:text-neutral-500">
+                        {{ $room->price_per_night }}
+                    </p>
+                </div>
+
                 <div class="mt-5 sm:mt-auto">
                     <p class="text-xs text-gray-500 dark:text-neutral-500">
                         {{ $room->description }}

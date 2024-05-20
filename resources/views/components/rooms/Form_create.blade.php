@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -11,6 +10,7 @@
 <div class="max-w-lg mx-auto">
     <form action="{{ route('admin.rooms.store') }}" method="POST" enctype="multipart/form-data" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         @csrf
+
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="label">
                 Nom de la chambre
@@ -23,6 +23,13 @@
                 Description
             </label>
             <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="description" name="description" rows="4" placeholder="Description de la chambre"></textarea>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="price_per_night">
+                Prix par nuit (€)
+            </label>
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="price_per_night" name="price_per_night" type="number" step="0.01" placeholder="Prix par nuit">
         </div>
 
         @foreach ($roomOptions as $roomOption)
@@ -49,7 +56,6 @@
         </div>
     </form>
 </div>
-
 
 </body>
 </html>

@@ -4,22 +4,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-
+use Illuminate\Http\Request;
 
 class Room extends Model
 {
     use HasFactory;
-    protected $fillable = ['label', 'description', 'picture'];
+
+    // Ajoutez 'price_per_night' à la propriété fillable pour permettre l'attribution de masse
+    protected $fillable = ['label', 'description', 'picture', 'price_per_night'];
     public $timestamps = false;
 
     public function roomOptions(): BelongsToMany
     {
         return $this->belongsToMany(RoomOptions::class, RoomsRoomOptions::class)->withPivot('value');
     }
+
     public function reservations()
     {
         return $this->hasMany(Reservation::class);
     }
+
     public function checkAvailability(Request $request, Room $chambre)
     {
         $start_date = $request->start_date;
