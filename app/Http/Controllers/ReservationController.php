@@ -16,12 +16,9 @@ use Illuminate\Support\Facades\Session;
 
 class ReservationController extends Controller
 {
-    public function index(Request $request): View
-    {
-        if (!Gate::allows(Role::ADMIN)) {
-            abort(403);
-        }
 
+    public function index(Request $request)
+    {
         $query = Reservation::with('room', 'user');
 
         // Filtrage par nom de chambre ou par nom d'utilisateur
@@ -37,16 +34,19 @@ class ReservationController extends Controller
             });
         }
 
-        // Filtrage par date de début
+        // Filtrage par date exacte
         if ($request->filled('start_date')) {
             $startDate = Carbon::createFromFormat('Y-m-d', $request->input('start_date'))->startOfDay();
-            $query->where('start_date', '>=', $startDate);
+
+            // Utiliser $startDate dans la requête pour la date exacte
+            $query->whereDate('start_date', $startDate);
         }
 
-        // Tri par nom d'utilisateur
+        // Tri par nom d'utilisateur ou autre critère
         if ($request->filled('sort_by') && $request->filled('order')) {
             $sortBy = $request->input('sort_by');
             $order = $request->input('order');
+
             if ($sortBy == 'user_name') {
                 $query->join('users', 'reservations.user_id', '=', 'users.id')
                     ->orderBy('users.name', $order);
@@ -64,10 +64,12 @@ class ReservationController extends Controller
         ]);
     }
 
+
+
     public function show(int $id)
     {
         $room = Room::with('roomOptions')->findOrFail($id);
-        $roomOptions = $room->roomOptions;  // Récupérer les options de la chambre
+        $roomOptions = $room->roomOptions;
         $reservations = Reservation::where('room_id', $id)->get(['start_date', 'end_date']);
 
         return view('reservation.index', [
@@ -75,7 +77,9 @@ class ReservationController extends Controller
             'roomOptions' => $roomOptions,
             'reservations' => $reservations,
         ]);
-    }
+
+
+}
 
     public function store(Request $request)
     {
@@ -117,7 +121,22 @@ class ReservationController extends Controller
         Session::flash('success', "Votre réservation a bien été enregistrée ! N'oubliez pas de faire le virement.<br> Merci et à bientôt");
         return redirect()->route('home.index');
     }
+    public function calculateTotalPrice(Request $request)
+    {
+        $room_id = $request->input('room_id');
+        $start_date = Carbon::createFromFormat('Y-m-d', $request->input('start_date'));
+        $end_date = Carbon::createFromFormat('Y-m-d', $request->input('end_date'));
 
+        $room = Room::find($room_id);
+        if (!$room) {
+            return response()->json(['error' => 'Room not found'], 404);
+        }
+
+        $nights = $start_date->diffInDays($end_date);
+        $totalPrice = $room->price_per_night * $nights;
+
+        return response()->json(['totalPrice' => $totalPrice]);
+    }
 
     public function createFromAdmin()
     {

@@ -113,6 +113,7 @@
         $(function() {
             // Récupérer les dates de réservation depuis le serveur
             const reservations = @json($reservations);
+            const roomPricePerNight = {{ $room->price_per_night }};
 
             // Transformer les dates de réservation en tableau de dates invalides
             const invalidDates = reservations.map(reservation => {
@@ -142,6 +143,15 @@
                     monthNames: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
                     firstDay: 1
                 }
+            }).on('apply.daterangepicker', function(ev, picker) {
+                // Calculer le nombre de nuits et le prix total
+                const startDate = picker.startDate;
+                const endDate = picker.endDate;
+                const nights = endDate.diff(startDate, 'days');
+                const totalPrice = nights * roomPricePerNight;
+
+                // Afficher le prix total
+                $('#totalPrice').val(totalPrice + ' €');
             });
         });
     </script>

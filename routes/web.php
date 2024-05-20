@@ -62,6 +62,7 @@ Route::get('/about', [AboutController::class, 'index'])->name('about.index');
 
 Route::get('/reservation/{id}', [ReservationController::class, 'show'])->name('reservation.show');
 Route::post('/reservation', [ReservationController::class, 'store'])->name('reservation.store');
+Route::post('/reservation/calculate-total-price', [ReservationController::class, 'calculateTotalPrice'])->name('reservation.calculateTotalPrice');
 
 // Correction pour utiliser les méthodes du contrôleur ChambreController
 Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');
