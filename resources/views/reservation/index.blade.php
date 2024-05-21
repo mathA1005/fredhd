@@ -105,6 +105,11 @@
     </div>
     <!-- End Stepper -->
     <!-- Inclure DateRangePicker -->
+    <!-- Inclure DateRangePicker -->
+    <!-- Inclure DateRangePicker -->
+    <!-- Inclure DateRangePicker -->
+    <!-- Inclure DateRangePicker -->
+    <!-- Inclure DateRangePicker -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
@@ -113,47 +118,72 @@
         $(function() {
             // Récupérer les dates de réservation depuis le serveur
             const reservations = @json($reservations);
-            const roomPricePerNight = {{ $room->price_per_night }};
 
-            // Transformer les dates de réservation en tableau de dates invalides
+            // Transformer les dates de réservation en tableau de dates invalides pour les dates de séjour (excluant les dates de départ et d'arrivée)
             const invalidDates = reservations.map(reservation => {
-                const startDate = moment(reservation.start_date);
-                const endDate = moment(reservation.end_date);
+                // Créer des objets moment pour les dates de début et de fin de la réservation
+                const startDate = moment(reservation.start_date, 'YYYY-MM-DD').add(1, 'days'); // Ignorer la première nuit
+                const endDate = moment(reservation.end_date, 'YYYY-MM-DD').subtract(1, 'days'); // Ignorer la dernière nuit
+
+                // Tableau pour stocker toutes les dates de la période de réservation
                 const dates = [];
+
+                // Ajouter chaque date de la période de réservation au tableau
                 while (startDate <= endDate) {
                     dates.push(startDate.clone().format('DD/MM/YYYY'));
-                    startDate.add(1, 'days');
+                    startDate.add(1, 'days'); // Passer à la date suivante
                 }
-                return dates;
-            }).flat();
 
+                return dates;
+            }).flat(); // Aplatir le tableau de tableaux en un seul tableau
+
+            // Transformer les dates de réservation en tableau de dates de départ et d'arrivée
+            const departureDates = reservations.map(reservation => moment(reservation.end_date, 'YYYY-MM-DD').format('DD/MM/YYYY'));
+            const arrivalDates = reservations.map(reservation => moment(reservation.start_date, 'YYYY-MM-DD').format('DD/MM/YYYY'));
+
+            // Initialiser le DateRangePicker sur l'input avec le nom "dates"
             $('input[name="dates"]').daterangepicker({
+                // Empêcher la sélection de dates antérieures à aujourd'hui
                 minDate: moment(),
+                // Fonction pour invalider les dates de séjour (excluant les dates de transit)
                 isInvalidDate: function(date) {
                     return invalidDates.includes(date.format('DD/MM/YYYY'));
                 },
+                isCustomDate: function(date) {
+                    if (departureDates.includes(date.format('DD/MM/YYYY')) || arrivalDates.includes(date.format('DD/MM/YYYY'))) {
+                        return 'barred-date'; // Ajouter une classe CSS pour les dates barrées
+                    }
+                    return '';
+                },
+                // Paramètres de localisation en français
                 locale: {
-                    autoApply: true,
-                    applyLabel: "Appliquer",
-                    cancelLabel: "Annuler",
-                    fromLabel: "DE",
-                    toLabel: "A",
-                    format: "DD/MM/YYYY",
-                    daysOfWeek: ["Di", "Lu", "Ma", "Me", "Je", "Ve", "Sa"],
-                    monthNames: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
-                    firstDay: 1
+                    autoApply: true, // Appliquer automatiquement la sélection
+                    applyLabel: "Appliquer", // Label pour le bouton "Appliquer"
+                    cancelLabel: "Annuler", // Label pour le bouton "Annuler"
+                    fromLabel: "De", // Label pour "De"
+                    toLabel: "À", // Label pour "À"
+                    format: "DD/MM/YYYY", // Format des dates
+                    daysOfWeek: ["Di", "Lu", "Ma", "Me", "Je", "Ve", "Sa"], // Jours de la semaine
+                    monthNames: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"], // Mois de l'année
+                    firstDay: 1 // Le premier jour de la semaine (lundi)
                 }
-            }).on('apply.daterangepicker', function(ev, picker) {
-                // Calculer le nombre de nuits et le prix total
-                const startDate = picker.startDate;
-                const endDate = picker.endDate;
-                const nights = endDate.diff(startDate, 'days');
-                const totalPrice = nights * roomPricePerNight;
-
-                // Afficher le prix total
-                $('#totalPrice').val(totalPrice + ' €');
             });
+
+            // Ajouter le style pour les dates barrées
+            $('<style>')
+                .prop('type', 'text/css')
+                .html(`
+                .barred-date {
+                    background-color: #d3d3d3 !important; /* Gris */
+                    color: #000000 !important; /* Noir */
+                    text-decoration: line-through !important; /* Barré */
+                }
+            `)
+                .appendTo('head');
         });
     </script>
+
+
+
 
 @endsection

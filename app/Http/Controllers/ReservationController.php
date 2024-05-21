@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Session;
 
 class ReservationController extends Controller
 {
-
     public function index(Request $request)
     {
         $query = Reservation::with('room', 'user');
@@ -64,8 +63,6 @@ class ReservationController extends Controller
         ]);
     }
 
-
-
     public function show(int $id)
     {
         $room = Room::with('roomOptions')->findOrFail($id);
@@ -77,9 +74,7 @@ class ReservationController extends Controller
             'roomOptions' => $roomOptions,
             'reservations' => $reservations,
         ]);
-
-
-}
+    }
 
     public function store(Request $request)
     {
@@ -90,15 +85,18 @@ class ReservationController extends Controller
         $room_id = $request->get('room');
         $days = $request->get('dates');
         $arr_dates = explode(' - ', $days);
-        $start_date = Carbon::createFromFormat('d/m/Y', $arr_dates[0], 'Europe/Brussels');
-        $end_date = Carbon::createFromFormat('d/m/Y', $arr_dates[1], 'Europe/Brussels');
+        $start_date = Carbon::createFromFormat('d/m/Y', $arr_dates[0], 'Europe/Brussels')->startOfDay();
+        $end_date = Carbon::createFromFormat('d/m/Y', $arr_dates[1], 'Europe/Brussels')->endOfDay();
 
         // Vérifier les dates de réservation
         $reserved = Reservation::query()
             ->where('room_id', $room_id)
             ->where(function($query) use ($start_date, $end_date) {
-                $query->whereBetween('start_date', [$start_date, $end_date])
-                    ->orWhereBetween('end_date', [$start_date, $end_date])
+                $query->where(function($query) use ($start_date, $end_date) {
+                    // Ne pas inclure les dates de début et de fin elles-mêmes pour permettre les transitions
+                    $query->whereBetween('start_date', [$start_date, $end_date->copy()->subDay()])
+                        ->orWhereBetween('end_date', [$start_date->copy()->addDay(), $end_date]);
+                })
                     ->orWhere(function($query) use ($start_date, $end_date) {
                         $query->where('start_date', '<=', $start_date)
                             ->where('end_date', '>=', $end_date);
@@ -121,6 +119,9 @@ class ReservationController extends Controller
         Session::flash('success', "Votre réservation a bien été enregistrée ! N'oubliez pas de faire le virement.<br> Merci et à bientôt");
         return redirect()->route('home.index');
     }
+
+
+
     public function calculateTotalPrice(Request $request)
     {
         $room_id = $request->input('room_id');
@@ -171,12 +172,21 @@ class ReservationController extends Controller
         $room_id = $request->get('room_id');
         $days = $request->get('dates');
         $arr_dates = explode(' - ', $days);
-        $start_date = Carbon::createFromFormat('d/m/Y', $arr_dates[0], 'Europe/Brussels');
-        $end_date = Carbon::createFromFormat('d/m/Y', $arr_dates[1], 'Europe/Brussels');
+        $start_date = Carbon::createFromFormat('d/m/Y', $arr_dates[0], 'Europe/Brussels')->startOfDay();
+        $end_date = Carbon::createFromFormat('d/m/Y', $arr_dates[1], 'Europe/Brussels')->endOfDay();
 
-        $reserved = Reservation::query()->whereDate('start_date', '>=', $start_date)
-            ->whereDate('end_date', '<=', $end_date)
+        $reserved = Reservation::query()
             ->where('room_id', $room_id)
+            ->where(function($query) use ($start_date, $end_date) {
+                $query->where(function($query) use ($start_date, $end_date) {
+                    $query->whereBetween('start_date', [$start_date, $end_date])
+                        ->orWhereBetween('end_date', [$start_date, $end_date]);
+                })
+                    ->orWhere(function($query) use ($start_date, $end_date) {
+                        $query->where('start_date', '<', $start_date)
+                            ->where('end_date', '>', $end_date);
+                    });
+            })
             ->exists();
 
         if ($reserved) {
@@ -208,7 +218,7 @@ class ReservationController extends Controller
 
         Session::flash(
             'success',
-            "Votre réservation a bien été enregistrée ! N\'oubliez pas de faire le virement.<br> Merci et à bientôt"
+            "Votre réservation a bien été enregistrée ! N'oubliez pas de faire le virement.<br> Merci et à bientôt"
         );
         return redirect()->route('admin.index');
     }
