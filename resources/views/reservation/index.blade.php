@@ -57,18 +57,17 @@
         <form action="{{ route('reservation.store') }}" method="post">
             @csrf
             <div class="mt-5 sm:mt-8">
-                <!-- First Contnet -->
+                <!-- First Content -->
                 <div data-hs-stepper-content-item='{"index": 1 }'>
                     <x-reservation.step-card :stepNumber="1" :room="$room"/>
                 </div>
-                <!-- End First Contnet -->
+                <!-- End First Content -->
 
-                <!-- First Contnet -->
+                <!-- Second Content -->
                 <div data-hs-stepper-content-item='{"index": 2}' style="display: none;">
                     <x-reservation.step-card :stepNumber="2" :roomOptions="$roomOptions"/>
                 </div>
-                <!-- End First Contnet -->
-
+                <!-- End Second Content -->
 
                 <!-- Button Group -->
                 <div class="mt-5 flex justify-between items-center gap-x-2">
@@ -104,11 +103,6 @@
         <!-- End Stepper Content -->
     </div>
     <!-- End Stepper -->
-    <!-- Inclure DateRangePicker -->
-    <!-- Inclure DateRangePicker -->
-    <!-- Inclure DateRangePicker -->
-    <!-- Inclure DateRangePicker -->
-    <!-- Inclure DateRangePicker -->
     <!-- Inclure DateRangePicker -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
@@ -180,10 +174,17 @@
                 }
             `)
                 .appendTo('head');
+
+            // Recalculer le prix total lorsque les dates de réservation changent
+            $('input[name="dates"]').on('apply.daterangepicker', function(ev, picker) {
+                const startDate = picker.startDate;
+                const endDate = picker.endDate;
+                const roomPricePerNight = {{ $room->price_per_night }};
+                const nights = endDate.diff(startDate, 'days');
+                const totalPrice = roomPricePerNight * nights;
+                $('#totalPrice').val(totalPrice + ' €');
+            });
         });
     </script>
-
-
-
 
 @endsection
