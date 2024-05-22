@@ -32,12 +32,17 @@ class RoomController extends Controller
         ]);
     }
 
+
     public function show($id)
     {
         $room = Room::findOrFail($id);
+        $roomOptions = $room->roomOptions; // Assurez-vous que roomOptions est chargé
 
-        return view('rooms.show', ['room' => $room]);
+        return view('rooms.show', compact('room', 'roomOptions'));
     }
+
+
+
 
     public function edit($id)
     {

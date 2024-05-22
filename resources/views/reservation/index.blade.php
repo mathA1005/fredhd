@@ -96,7 +96,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script type="text/javascript">
 
-$(function() {
+        $(function() {
             // Récupérer les dates de réservation depuis le serveur
             const reservations = @json($reservations);
 
@@ -143,8 +143,10 @@ $(function() {
                 .prop('type', 'text/css')
                 .html(`
                 .barred-date {
-                    color: #000000 !important;
-                    text-decoration: line-through !important;
+    background-color: #d3d3d3 !important; /* Gris */
+    color: #000000 !important; /* Noir */
+    text-decoration: line-through !important; /* Barré */
+}
                 }
             `)
                 .appendTo('head');
@@ -161,5 +163,6 @@ $(function() {
             });
         });
     </script>
+
 
 @endsection

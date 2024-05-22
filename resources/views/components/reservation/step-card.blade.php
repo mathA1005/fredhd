@@ -19,7 +19,6 @@
             Détails de votre réservation
         </h3>
         <div class="space-y-3 col-span-2">
-            <x-form.input type="text" id="roomPrice" name="roomPrice" label="Prix par nuit" value="{{ $room->price_per_night }} €" readonly/>
         </div>
         <div class="space-y-3 col-span-2">
             <x-form.input type="text" id="nightsCount" name="nightsCount" label="Nombre de nuits" readonly/>
