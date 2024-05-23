@@ -36,9 +36,14 @@ class ReservationController extends Controller
         // Filtrage par date exacte
         if ($request->filled('start_date')) {
             $startDate = Carbon::createFromFormat('Y-m-d', $request->input('start_date'))->startOfDay();
-
-            // Utiliser $startDate dans la requête pour la date exacte
             $query->whereDate('start_date', $startDate);
+        }
+
+        // Filtrage par les 7 prochains jours
+        if ($request->filled('next_7_days') && $request->input('next_7_days') == 'true') {
+            $today = Carbon::today();
+            $nextWeek = Carbon::today()->addDays(7);
+            $query->whereBetween('start_date', [$today, $nextWeek]);
         }
 
         // Tri par nom d'utilisateur ou autre critère

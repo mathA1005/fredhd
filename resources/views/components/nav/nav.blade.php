@@ -7,7 +7,7 @@
             <!-- Logo -->
             <a class="flex-none rounded-xl text-xl inline-block font-semibold focus:outline-none focus:opacity-80"
                href="{{ url('/') }}" aria-label="logo fred">
-                <img src="{{ asset('storage/app/public/picture/logo.png') }}" alt="logo fred" />
+                <img src="{{ asset('storage/picture/fred.png') }}" alt="Admin" class="inline-block h-28 w-28 mr-2">
             </a>
             <!-- End Logo -->
         </div>

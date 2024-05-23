@@ -10,7 +10,6 @@ class Room extends Model
 {
     use HasFactory;
 
-    // Ajoutez 'price_per_night' à la propriété fillable pour permettre l'attribution de masse
     protected $fillable = ['label', 'description', 'picture', 'price_per_night'];
     public $timestamps = false;
 
@@ -39,4 +38,10 @@ class Room extends Model
             ? response()->json(['available' => true])
             : response()->json(['available' => false]);
     }
+
+    public function pictures()
+    {
+        return $this->hasMany(RoomPicture::class);
+    }
 }
+
