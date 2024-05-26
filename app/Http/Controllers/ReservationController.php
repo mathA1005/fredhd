@@ -23,7 +23,6 @@ class ReservationController extends Controller
         // Filtrage par nom de chambre ou par nom d'utilisateur
         if ($request->filled('search')) {
             $search = $request->input('search');
-
             $query->where(function ($query) use ($search) {
                 $query->whereHas('room', function ($query) use ($search) {
                     $query->where('label', 'like', "%$search%");
@@ -42,7 +41,7 @@ class ReservationController extends Controller
         // Filtrage par les 7 prochains jours
         if ($request->filled('next_7_days') && $request->input('next_7_days') == 'true') {
             $today = Carbon::today();
-            $nextWeek = Carbon::today()->addDays(7);
+            $nextWeek = $today->addDays(7);
             $query->whereBetween('start_date', [$today, $nextWeek]);
         }
 
@@ -50,7 +49,6 @@ class ReservationController extends Controller
         if ($request->filled('sort_by') && $request->filled('order')) {
             $sortBy = $request->input('sort_by');
             $order = $request->input('order');
-
             if ($sortBy == 'user_name') {
                 $query->join('users', 'reservations.user_id', '=', 'users.id')
                     ->orderBy('users.name', $order);
@@ -63,9 +61,7 @@ class ReservationController extends Controller
 
         $reservations = $query->get(['reservations.*']); // S'assurer que les champs de réservation sont sélectionnés
 
-        return view('admin.index', [
-            'reservations' => $reservations
-        ]);
+        return view('admin.index', ['reservations' => $reservations]);
     }
 
     public function show(int $id)
@@ -104,17 +100,13 @@ class ReservationController extends Controller
         $reserved = Reservation::query()
             ->where('room_id', $room_id)
             ->where(function($query) use ($start_date, $end_date) {
-                $query->where(function($query) use ($start_date, $end_date) {
-                    // Ne pas inclure les dates de début et de fin elles-mêmes pour permettre les transitions
-                    $query->whereBetween('start_date', [$start_date, $end_date->copy()->subDay()])
-                        ->orWhereBetween('end_date', [$start_date->copy()->addDay(), $end_date]);
-                })
+                $query->whereBetween('start_date', [$start_date, $end_date->copy()->subDay()])
+                    ->orWhereBetween('end_date', [$start_date->copy()->addDay(), $end_date])
                     ->orWhere(function($query) use ($start_date, $end_date) {
                         $query->where('start_date', '<=', $start_date)
                             ->where('end_date', '>=', $end_date);
                     });
-            })
-            ->exists();
+            })->exists();
 
         if ($reserved) {
             Session::flash('error', "Impossible de faire cette réservation car déjà réservé");
@@ -129,11 +121,8 @@ class ReservationController extends Controller
         ]);
 
         Session::flash('success', "Votre réservation a bien été enregistrée ! N'oubliez pas de faire le virement.<br> Merci et à bientôt");
-        return redirect()->route('home.index');
+        return redirect()->route('reservation.merci');
     }
-
-
-
 
     public function calculateTotalPrice(Request $request)
     {
@@ -151,88 +140,75 @@ class ReservationController extends Controller
 
         return response()->json(['totalPrice' => $totalPrice]);
     }
-
     public function createFromAdmin()
     {
-        if (!Gate::allows(Role::ADMIN)) {
-            abort(403);
+        $users = User::all();
+        $rooms = Room::with('reservations')->get();
+
+        // Formatage des réservations pour chaque chambre
+        foreach ($rooms as $room) {
+            $room->reservations = $room->reservations->map(function ($reservation) {
+                return [
+                    'start_date' => $reservation->start_date->format('Y-m-d'),
+                    'end_date' => $reservation->end_date->format('Y-m-d'),
+                ];
+            });
         }
 
-        $users = User::all();
-        $rooms = Room::all();
-
-        return view(
-            'admin.reservation.create',
-            [
-                'users' => $users,
-                'rooms' => $rooms,
-            ]
-        );
+        return view('admin.reservation.create', [
+            'users' => $users,
+            'rooms' => $rooms,
+        ]);
     }
 
     public function storeFromAdmin(Request $request)
     {
-        if (!Gate::allows(Role::ADMIN)) {
-            abort(403);
+        $request->validate([
+            'user_id' => 'nullable|exists:users,id',
+            'name' => 'nullable|string|max:255',
+            'email' => 'nullable|string|email|max:255|unique:users,email',
+            'room_id' => 'required|exists:rooms,id',
+            'dates' => 'required|string',
+        ]);
+
+        $user = null;
+
+        if ($request->filled('user_id')) {
+            $user = User::find($request->input('user_id'));
+        } else {
+            $user = User::create([
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'password' => bcrypt(Str::random(10)), // Génère un mot de passe aléatoire
+            ]);
         }
 
-        $user_id = $request->get('user_id');
+        $dates = explode(' - ', $request->input('dates'));
+        $start_date = Carbon::createFromFormat('Y-m-d', trim($dates[0]))->startOfDay();
+        $end_date = Carbon::createFromFormat('Y-m-d', trim($dates[1]))->endOfDay();
 
-        $name = $request->get('name');
-        $password = Hash::make(config('app.default_user.user_password'));
-        $email = $request->get('email');
-
-        $room_id = $request->get('room_id');
-        $days = $request->get('dates');
-        $arr_dates = explode(' - ', $days);
-        $start_date = Carbon::createFromFormat('d/m/Y', $arr_dates[0], 'Europe/Brussels')->startOfDay();
-        $end_date = Carbon::createFromFormat('d/m/Y', $arr_dates[1], 'Europe/Brussels')->endOfDay();
-
-        $reserved = Reservation::query()
-            ->where('room_id', $room_id)
-            ->where(function($query) use ($start_date, $end_date) {
-                $query->where(function($query) use ($start_date, $end_date) {
-                    $query->whereBetween('start_date', [$start_date, $end_date])
-                        ->orWhereBetween('end_date', [$start_date, $end_date]);
-                })
-                    ->orWhere(function($query) use ($start_date, $end_date) {
-                        $query->where('start_date', '<', $start_date)
-                            ->where('end_date', '>', $end_date);
+        // Vérifier si les dates sont disponibles
+        $isReserved = Reservation::where('room_id', $request->input('room_id'))
+            ->where(function ($query) use ($start_date, $end_date) {
+                $query->whereBetween('start_date', [$start_date, $end_date->copy()->subDay()])
+                    ->orWhereBetween('end_date', [$start_date->copy()->addDay(), $end_date])
+                    ->orWhere(function ($query) use ($start_date, $end_date) {
+                        $query->where('start_date', '<=', $start_date)
+                            ->where('end_date', '>=', $end_date);
                     });
-            })
-            ->exists();
+            })->exists();
 
-        if ($reserved) {
-            Session::flash('error', "Impossible de faire cette réservation car déjà réservé");
-            return redirect()->back();
+        if ($isReserved) {
+            return redirect()->back()->with('error', "La chambre est déjà réservée pour ces dates.");
         }
 
-        if (!$user_id) {
-            $user = User::create(
-                [
-                    'name' => $name,
-                    'password' => $password,
-                    'email' => $email,
-                    'role_id' => Role::where('name', Role::USER)->first()->id,
-                ]
-            );
+        Reservation::create([
+            'user_id' => $user->id,
+            'room_id' => $request->input('room_id'),
+            'start_date' => $start_date,
+            'end_date' => $end_date,
+        ]);
 
-            $user_id = $user->id;
-        }
-
-        Reservation::create(
-            [
-                'user_id' => $user_id,
-                'start_date' => $start_date,
-                'end_date' => $end_date,
-                'room_id' => $room_id,
-            ]
-        );
-
-        Session::flash(
-            'success',
-            "Votre réservation a bien été enregistrée ! N'oubliez pas de faire le virement.<br> Merci et à bientôt"
-        );
-        return redirect()->route('admin.index');
+        return redirect()->route('reservation.merci')->with('success', 'La réservation a été créée avec succès.');
     }
 }

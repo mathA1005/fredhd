@@ -5,10 +5,8 @@
             Plus que quelques détails supplémentaires pour confirmer votre réservation
         </h3>
         <x-form.input type="hidden" name="room" value="{{ $room->id }}"/>
-        <div class="space-y-3">
-            <x-form.input type="number" name="nb_person" label="nombre de personnes" placeholder="Nombre de personnes"/>
-        </div>
-        <div class="space-y-x3 relative z-10">
+
+        <div class="space-y-3 col-span-2 col-start-2 relative z-10">
             <x-form.input type="text" name="dates" label="Date de la réservation" placeholder="Dates de réservation" id="datepicker"/>
         </div>
     </div>
@@ -18,13 +16,11 @@
         <h3 class="text-gray-800 dark:text-neutral-800 col-span-4 py-8 text-center">
             Détails de votre réservation
         </h3>
-        <div class="space-y-3 col-span-2">
+        <div class="space-y-3 col-span-4 text-center">
+            <x-form.input type="text" id="nightsCount" name="nightsCount" label="Nombre de nuits" readonly class="mx-auto"/>
         </div>
-        <div class="space-y-3 col-span-2">
-            <x-form.input type="text" id="nightsCount" name="nightsCount" label="Nombre de nuits" readonly/>
-        </div>
-        <div class="space-y-3 col-span-4">
-            <x-form.input type="text" id="totalPrice" name="totalPrice" label="Prix total" readonly/>
+        <div class="space-y-3 col-span-4 text-center">
+            <x-form.input type="text" id="totalPrice" name="totalPrice" label="Prix total" readonly class="mx-auto"/>
         </div>
     </div>
     @break

@@ -1,5 +1,6 @@
 @extends('layouts.main')
 @section('content')
+    <div class="m-40"> <!-- Ajouter une marge de 2rem (8 unités de Tailwind) autour de toute la page -->
 
     <h1>Réservation</h1>
     <!-- Stepper -->
@@ -7,7 +8,7 @@
         <!-- Stepper Nav -->
         <ul class="relative flex flex-row gap-x-2">
             <li class="flex items-center gap-x-2 shrink basis-0 flex-1 group" data-hs-stepper-nav-item='{"index": 1}'>
-                <span class="min-w-7 min-h-7 group inline-flex items-center text-xs align-middle">
+                <span class="min-w-7 min-h-7 inline-flex items-center text-xs align-middle">
                     <span class="size-7 flex justify-center items-center flex-shrink-0 bg-gray-100 font-medium text-gray-800 rounded-full group-focus:bg-gray-200 hs-stepper-active:bg-blue-600 hs-stepper-active:text-white hs-stepper-success:bg-blue-600 hs-stepper-success:text-white hs-stepper-completed:bg-teal-500 hs-stepper-completed:group-focus:bg-teal-600 dark:bg-neutral-700 dark:text-white dark:group-focus:bg-gray-600 dark:hs-stepper-active:bg-blue-500 dark:hs-stepper-success:bg-blue-500 dark:hs-stepper-completed:bg-teal-500 dark:hs-stepper-completed:group-focus:bg-teal-600">
                         <span class="hs-stepper-success:hidden hs-stepper-completed:hidden">1</span>
                         <svg class="hidden flex-shrink-0 size-3 hs-stepper-success:block" xmlns="http://www.w3.org/2000/svg"
@@ -18,10 +19,11 @@
                     </span>
                     <span class="ms-2 text-sm font-medium text-gray-800 dark:text-neutral-200">Step 1</span>
                 </span>
-                <div class="w-full h-px flex-1 bg-gray-200 group-last:hidden hs-stepper-success:bg-blue-600 hs-stepper-completed:bg-teal-600 dark:bg-neutral-700 dark:hs-stepper-success:bg-blue-600 dark:hs-stepper-completed:bg-teal-600"></div>
+                <div class="flex-1 h-px bg-gray-200 group-last:hidden hs-stepper-success:bg-blue-600 hs-stepper-completed:bg-teal-600 dark:bg-neutral-700 dark:hs-stepper-success:bg-blue-600 dark:hs-stepper-completed:bg-teal-600 mx-2"></div>
             </li>
             <li class="flex items-center gap-x-2 shrink basis-0 flex-1 group" data-hs-stepper-nav-item='{"index": 2}'>
-                <span class="min-w-7 min-h-7 group inline-flex items-center text-xs align-middle">
+                <div class="flex-1 h-px bg-gray-200 group-first:hidden hs-stepper-success:bg-blue-600 hs-stepper-completed:bg-teal-600 dark:bg-neutral-700 dark:hs-stepper-success:bg-blue-600 dark:hs-stepper-completed:bg-teal-600 mx-2"></div>
+                <span class="min-w-7 min-h-7 inline-flex items-center text-xs align-middle">
                     <span class="size-7 flex justify-center items-center flex-shrink-0 bg-gray-100 font-medium text-gray-800 rounded-full group-focus:bg-gray-200 hs-stepper-active:bg-blue-600 hs-stepper-active:text-white hs-stepper-success:bg-blue-600 hs-stepper-success:text-white hs-stepper-completed:bg-teal-500 hs-stepper-completed:group-focus:bg-teal-600 dark:bg-neutral-700 dark:text-white dark:group-focus:bg-gray-600 dark:hs-stepper-active:bg-blue-500 dark:hs-stepper-success:bg-blue-500 dark:hs-stepper-completed:bg-teal-500 dark:hs-stepper-completed:group-focus:bg-teal-600">
                         <span class="hs-stepper-success:hidden hs-stepper-completed:hidden">2</span>
                         <svg class="hidden flex-shrink-0 size-3 hs-stepper-success:block" xmlns="http://www.w3.org/2000/svg"
@@ -32,7 +34,6 @@
                     </span>
                     <span class="ms-2 text-sm font-medium text-gray-800 dark:text-neutral-200">Step 2</span>
                 </span>
-                <div class="w-full h-px flex-1 bg-gray-200 group-last:hidden hs-stepper-success:bg-blue-600 hs-stepper-completed:bg-teal-600 dark:bg-neutral-700 dark:hs-stepper-success:bg-blue-600 dark:hs-stepper-completed:bg-teal-600"></div>
             </li>
         </ul>
         <!-- End Stepper Nav -->
@@ -48,7 +49,7 @@
                 <!-- End First Content -->
 
                 <!-- Second Content -->
-                <div data-hs-stepper-content-item='{"index": 2}' style="display: none;">
+                <div class="w-full text-center" data-hs-stepper-content-item='{"index": 2}' style="display: none;">
                     <x-reservation.step-card :stepNumber="2" :room="$room"/>
                 </div>
                 <!-- End Second Content -->
@@ -86,6 +87,8 @@
         </form>
         <!-- End Stepper Content -->
     </div>
+    </div>
+
     <!-- End Stepper -->
 
     <!-- Inclure DateRangePicker -->

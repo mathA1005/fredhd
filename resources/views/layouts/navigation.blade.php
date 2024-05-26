@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false }" class="bg-white border-b ">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-28"> <!-- Augmenté la hauteur à 28 pour plus de largeur -->
             <div class="flex">
@@ -35,7 +35,7 @@
                     <a href="{{ route('login') }}" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl border border-gray-200 text-black hover:bg-gray-100 dark:border-neutral-700 dark:hover:bg-white/10 dark:text-neutral-800 dark:hover:text-neutral-600">
                         {{ __('Sign in') }}
                     </a>
-                    <a href="{{ route('register') }}" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl border border-transparent bg-lime-400 text-black hover:bg-lime-500 transition focus:outline-none focus:bg-lime-500">
+                    <a href="{{ route('register') }}" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl border border-transparent bg-customGreen text-white hover:bg-customGreen transition focus:outline-none focus:bg-customGreen">
                         {{ __('Register') }}
                     </a>
                 </div>
@@ -47,7 +47,7 @@
                                 {{ Auth::user()->name }}
                                 <div class="ms-1">
                                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 1 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 1 111.414 1.414l-4 4a 1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                                     </svg>
                                 </div>
                             </button>
@@ -69,6 +69,14 @@
                         </x-slot>
                     </x-dropdown>
                 </div>
+                @if(auth()->check() && auth()->user()->role->name === \App\Models\Role::ADMIN)
+                    <div class="flex items-center gap-x-2 ms-auto py-1 md:ps-6 md:order-3 md:col-span-3">
+                        <a href="{{ route('admin.index') }}" type="button"
+                           class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl border border-gray-200 text-black hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:hover:bg-white/10 dark:text-neutral-800 dark:hover:text-neutral-600">
+                            Dashboard Admin
+                        </a>
+                    </div>
+            @endif
         @endif
 
         <!-- Hamburger -->

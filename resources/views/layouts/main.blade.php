@@ -21,7 +21,7 @@
 @if (Session::has('success'))
     <x-notifications.toast type="success"/>
 @endif
-<x-nav.nav/>
+@include('layouts.navigation')
 
 <!-- Page Content -->
 <main class="w-full">
