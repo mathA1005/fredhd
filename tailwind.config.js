@@ -7,12 +7,15 @@ export default {
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
         'node_modules/preline/dist/*.js',
-
     ],
 
-    theme: {
-        extend: {},
 
+    theme: {
+        extend: {
+            colors: {
+                customGreen: '#253c2f',
+            },
+        },
     },
 
     plugins: [

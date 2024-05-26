@@ -1,12 +1,5 @@
 <!-- Contact Us -->
 <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
-    <div class="max-w-xl mx-auto">
-        <div class="text-center">
-            <h1 class="text-3xl font-bold">
-                Contactez-Nous
-            </h1>
-        </div>
-    </div>
     <div class="mt-12 max-w-lg mx-auto">
         <!-- Card -->
         <div class="flex flex-col border rounded-xl p-4 sm:p-6 lg:p-8 dark:border-neutral-700">

@@ -1,12 +1,13 @@
 @extends('layouts.main')
 
 @section('content')
-    <x-contact.form />
-    <title>Carte Google Maps</title>
-    </head>
-    <div class="full bg-black p-4"
+    <x-contact.header/>
 
-    <body class="flex items-center justify-center min-h-screen bg-gray-100">
+    <x-contact.form />
+
+    <div class="full bg-black p-4 rounded-lg">
+
+    <body class="flex items-center justify-center min-h-screen bg-gray-100 ">
     <div class="flex flex-col lg:flex-row items-stretch justify-center w-full gap-4 lg:gap-8">
         <!-- Conteneur de la carte avec une hauteur maximale plus petite et une marge à droite -->
         <div class="w-full lg:w-1/2 flex items-stretch max-h-72 lg:max-h-80">
@@ -21,7 +22,7 @@
         </div>
     </div>
 
-    </div>
+
     </body>
 
 @endsection

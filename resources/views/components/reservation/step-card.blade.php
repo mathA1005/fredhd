@@ -8,7 +8,7 @@
         <div class="space-y-3">
             <x-form.input type="number" name="nb_person" label="nombre de personnes" placeholder="Nombre de personnes"/>
         </div>
-        <div class="space-y-3">
+        <div class="space-y-x3">
             <x-form.input type="text" name="dates" label="Date de la réservation" placeholder="Dates de réservation" id="daterange"/>
         </div>
     </div>

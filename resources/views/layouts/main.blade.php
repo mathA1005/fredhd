@@ -14,7 +14,7 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="container mx-auto">
+<body class="w-full">
 @if (Session::has('error'))
     <x-notifications.toast type="error"/>
 @endif
@@ -24,8 +24,9 @@
 <x-nav.nav/>
 
 <!-- Page Content -->
-@yield('content')
-</div>
+<main class="w-full">
+    @yield('content')
+</main>
 
 <x-footer/>
 <script src="https://unpkg.com/lucide@latest"></script>
