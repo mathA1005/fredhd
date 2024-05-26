@@ -90,8 +90,15 @@ class ReservationController extends Controller
         $room_id = $request->get('room');
         $days = $request->get('dates');
         $arr_dates = explode(' - ', $days);
-        $start_date = Carbon::createFromFormat('d/m/Y', $arr_dates[0], 'Europe/Brussels')->startOfDay();
-        $end_date = Carbon::createFromFormat('d/m/Y', $arr_dates[1], 'Europe/Brussels')->endOfDay();
+
+        // Assurez-vous que le format de date est correct
+        try {
+            $start_date = Carbon::createFromFormat('Y-m-d', $arr_dates[0], 'Europe/Brussels')->startOfDay();
+            $end_date = Carbon::createFromFormat('Y-m-d', $arr_dates[1], 'Europe/Brussels')->endOfDay();
+        } catch (\Exception $e) {
+            Session::flash('error', "Le format des dates est incorrect.");
+            return redirect()->back();
+        }
 
         // Vérifier les dates de réservation
         $reserved = Reservation::query()
@@ -115,7 +122,7 @@ class ReservationController extends Controller
         }
 
         Reservation::create([
-            'user_id' => Auth::user()->id,
+            'user_id' => Auth::id(),
             'start_date' => $start_date,
             'end_date' => $end_date,
             'room_id' => $room_id,
@@ -124,6 +131,7 @@ class ReservationController extends Controller
         Session::flash('success', "Votre réservation a bien été enregistrée ! N'oubliez pas de faire le virement.<br> Merci et à bientôt");
         return redirect()->route('home.index');
     }
+
 
 
 

@@ -2,7 +2,6 @@
 @section('content')
 
     <h1>Réservation</h1>
-
     <!-- Stepper -->
     <div data-hs-stepper="">
         <!-- Stepper Nav -->
@@ -90,79 +89,68 @@
     <!-- End Stepper -->
 
     <!-- Inclure DateRangePicker -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@easepick/bundle@1.2.1/dist/index.umd.min.js"></script>
+
     <script type="text/javascript">
 
         $(function() {
             // Récupérer les dates de réservation depuis le serveur
             const reservations = @json($reservations);
+            const pricePerNight = {{ $room->price_per_night }};
 
-            // Transformer les dates de réservation en tableau de dates invalides pour les dates de séjour (excluant les dates de départ et d'arrivée)
-            const invalidDates = reservations.map(reservation => {
-                const startDate = moment(reservation.start_date, 'YYYY-MM-DD').add(1, 'days');
-                const endDate = moment(reservation.end_date, 'YYYY-MM-DD').subtract(1, 'days');
-                const dates = [];
-                while (startDate <= endDate) {
-                    dates.push(startDate.clone().format('DD/MM/YYYY'));
-                    startDate.add(1, 'days');
-                }
-                return dates;
-            }).flat();
+            const DateTime = easepick.DateTime;
 
-            const departureDates = reservations.map(reservation => moment(reservation.end_date, 'YYYY-MM-DD').format('DD/MM/YYYY'));
-            const arrivalDates = reservations.map(reservation => moment(reservation.start_date, 'YYYY-MM-DD').format('DD/MM/YYYY'));
+            const bookedDates = reservations.map((reservation) => {
+                return [
+                    new DateTime(reservation.start_date, 'YYYY-MM-DD'),
+                    new DateTime(reservation.end_date, 'YYYY-MM-DD')
+                ];
+            });
 
-            $('input[name="dates"]').daterangepicker({
-                minDate: moment(),
-                isInvalidDate: function(date) {
-                    return invalidDates.includes(date.format('DD/MM/YYYY'));
+            const picker = new easepick.create({
+                element: document.getElementById('datepicker'),
+                css: [
+                    'https://cdn.jsdelivr.net/npm/@easepick/bundle@1.2.1/dist/index.css',
+                ],
+                plugins: ['RangePlugin', 'LockPlugin'],
+                RangePlugin: {
+                    tooltipNumber(num) {
+                        return num - 1;
+                    },
+                    locale: {
+                        one: 'nuit',
+                        other: 'nuits',
+                    },
                 },
-                isCustomDate: function(date) {
-                    if (departureDates.includes(date.format('DD/MM/YYYY')) || arrivalDates.includes(date.format('DD/MM/YYYY'))) {
-                        return 'barred-date';
-                    }
-                    return '';
+                LockPlugin: {
+                    minDate: new Date(),
+                    minDays: 2,
+                    inseparable: true,
+                    filter(date, picked) {
+                        if (picked.length === 1) {
+                            const incl = date.isBefore(picked[0]) ? '[)' : '(]';
+                            return !picked[0].isSame(date, 'day') && date.inArray(bookedDates, incl);
+                        }
+                        return date.inArray(bookedDates, '[)');
+                    },
                 },
-                locale: {
-                    autoApply: true,
-                    applyLabel: "Appliquer",
-                    cancelLabel: "Annuler",
-                    fromLabel: "De",
-                    toLabel: "À",
-                    format: "DD/MM/YYYY",
-                    daysOfWeek: ["Di", "Lu", "Ma", "Me", "Je", "Ve", "Sa"],
-                    monthNames: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
-                    firstDay: 1
+                setup(picker) {
+                    picker.on('select', (evt) => {
+                        const startDate = evt.detail.start;
+                        const endDate = evt.detail.end;
+                        const nightsCount = endDate.diff(startDate, 'days');
+                        const totalPrice = nightsCount * pricePerNight;
+
+                        document.getElementById('nightsCount').value = nightsCount;
+                        document.getElementById('totalPrice').value = totalPrice.toFixed(2) + ' €';
+                    });
                 }
             });
 
-            $('<style>')
-                .prop('type', 'text/css')
-                .html(`
-                .barred-date {
-    background-color: #d3d3d3 !important; /* Gris */
-    color: #000000 !important; /* Noir */
-    text-decoration: line-through !important; /* Barré */
-}
-                }
-            `)
-                .appendTo('head');
-
-            $('input[name="dates"]').on('apply.daterangepicker', function(ev, picker) {
-                const startDate = picker.startDate;
-                const endDate = picker.endDate;
-                const roomPricePerNight = {{ $room->price_per_night }};
-                const nights = endDate.diff(startDate, 'days');
-                const totalPrice = roomPricePerNight * nights;
-
-                $('#nightsCount').val(nights + ' nuits');
-                $('#totalPrice').val(totalPrice + ' €');
-            });
-        });
+        })
     </script>
+
 
 
 @endsection
