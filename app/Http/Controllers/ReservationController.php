@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
+
 
 class ReservationController extends Controller
 {
@@ -99,10 +101,10 @@ class ReservationController extends Controller
         // Vérifier les dates de réservation
         $reserved = Reservation::query()
             ->where('room_id', $room_id)
-            ->where(function($query) use ($start_date, $end_date) {
+            ->where(function ($query) use ($start_date, $end_date) {
                 $query->whereBetween('start_date', [$start_date, $end_date->copy()->subDay()])
                     ->orWhereBetween('end_date', [$start_date->copy()->addDay(), $end_date])
-                    ->orWhere(function($query) use ($start_date, $end_date) {
+                    ->orWhere(function ($query) use ($start_date, $end_date) {
                         $query->where('start_date', '<=', $start_date)
                             ->where('end_date', '>=', $end_date);
                     });
@@ -140,6 +142,7 @@ class ReservationController extends Controller
 
         return response()->json(['totalPrice' => $totalPrice]);
     }
+
     public function createFromAdmin()
     {
         $users = User::all();
@@ -164,24 +167,12 @@ class ReservationController extends Controller
     public function storeFromAdmin(Request $request)
     {
         $request->validate([
-            'user_id' => 'nullable|exists:users,id',
-            'name' => 'nullable|string|max:255',
-            'email' => 'nullable|string|email|max:255|unique:users,email',
+            'user_id' => 'required|exists:users,id',
             'room_id' => 'required|exists:rooms,id',
             'dates' => 'required|string',
         ]);
 
-        $user = null;
-
-        if ($request->filled('user_id')) {
-            $user = User::find($request->input('user_id'));
-        } else {
-            $user = User::create([
-                'name' => $request->input('name'),
-                'email' => $request->input('email'),
-                'password' => bcrypt(Str::random(10)), // Génère un mot de passe aléatoire
-            ]);
-        }
+        $user = User::find($request->input('user_id'));
 
         $dates = explode(' - ', $request->input('dates'));
         $start_date = Carbon::createFromFormat('Y-m-d', trim($dates[0]))->startOfDay();
@@ -211,4 +202,5 @@ class ReservationController extends Controller
 
         return redirect()->route('reservation.merci')->with('success', 'La réservation a été créée avec succès.');
     }
+
 }

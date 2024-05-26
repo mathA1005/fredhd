@@ -2,31 +2,26 @@
 
 @section('content')
     <div class="max-w-lg mx-auto">
+        @if(session('error'))
+            <div class="bg-red-500 text-white p-4 rounded mb-4">
+                {{ session('error') }}
+            </div>
+        @endif
+        @if(session('success'))
+            <div class="bg-green-500 text-white p-4 rounded mb-4">
+                {{ session('success') }}
+            </div>
+        @endif
         <form action="{{ route('admin.reservation.storeFromAdmin') }}" method="POST" enctype="multipart/form-data" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
             @csrf
 
-            <h1 class="text-2xl font-bold mb-4">Client déjà existant</h1>
+            <h1 class="text-2xl font-bold mb-4">Sélectionner un client existant</h1>
             <select name="user_id" class="mb-4">
-                <option value="" selected="selected">Non</option>
+                <option value="" selected="selected">Choisir un client</option>
                 @foreach($users as $user)
                     <option value="{{ $user->id }}">{{ $user->name }}</option>
                 @endforeach
             </select>
-            <span class="text-2xl font-bold my-4 block">OU</span>
-            <hr>
-            <h1 class="text-2xl font-bold mb-4">Créer un nouveau client</h1><br>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
-                    Nom et prénom
-                </label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" name="name" placeholder="Nom et prénom">
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
-                    Email
-                </label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" name="email" placeholder="Email">
-            </div>
 
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="room_id">
