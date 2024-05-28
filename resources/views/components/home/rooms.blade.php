@@ -10,13 +10,13 @@
                         <img class="w-full object-cover rounded-xl" src="{{ Storage::url($room->picture) }}" alt="Photo de la chambre {{ $room->picture }}">
                     </div>
                     <div class="my-6">
-                        <h3 class="text-xl font-semibold text-gray-800 dark:text-neutral-300 dark:group-hover:text-white">
+                        <h3 class="text-lg font-bold text-customGreen">
                             {{ $room->label }}
                         </h3>
-                        <p class="mt-5 text-gray-600 dark:text-neutral-400">
+                        <p class="mt-5 text-white">
                             {{ $room->description }}
                         </p>
-                        <p class="mt-5 text-gray-600 dark:text-neutral-400">{{ $room->price_per_night }} € / nuit</p>
+                        <p class="mt-5  text-white">{{ $room->price_per_night }} € / nuit</p>
 
                         <!-- Affichage des options -->
                         @if($room->roomOptions->isNotEmpty())
@@ -25,7 +25,7 @@
                                 <ul class="list-disc list-inside text-gray-600 dark:text-neutral-300 dark:group-hover:text-white ">
                                     @foreach($room->roomOptions as $option)
                                         <li class="flex items-center">
-                                            <i data-lucide="{{ $option->icon }}" class="text-white mr-2"></i>
+                                            <i data-lucide="{{ $option->icon }}" class=" text-customGreen mr-2"></i>
                                             <span>{{ $option->label }}</span>
                                         </li>
                                     @endforeach

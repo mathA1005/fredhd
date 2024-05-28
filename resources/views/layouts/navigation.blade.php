@@ -26,6 +26,11 @@
                     <x-nav-link :href="route('faqs.index')" :active="request()->routeIs('faqs.index')">
                         {{ __('Faqs') }}
                     </x-nav-link>
+                    @if(auth()->check())
+                        <x-nav-link :href="route('reviews.index')" :active="request()->routeIs('reviews.index')">
+                            {{ __('Avis') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -109,6 +114,11 @@
             <x-responsive-nav-link :href="route('faqs.index')" :active="request()->routeIs('faqs.index')">
                 {{ __('Faqs') }}
             </x-responsive-nav-link>
+            @if(auth()->check())
+                <x-responsive-nav-link :href="route('reviews.index')" :active="request()->routeIs('reviews.index')">
+                    {{ __('Avis') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
     @if(auth()->check())

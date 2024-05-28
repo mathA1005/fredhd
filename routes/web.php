@@ -9,6 +9,7 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomOptionsController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ReviewController;
 
 // Dashboard route
 Route::get('/dashboard', function () {
@@ -92,6 +93,9 @@ Route::post('/options', [RoomOptionsController::class, 'store'])->name('options.
 // Contact routes
 Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
 Route::post('/contact', [ContactController::class, 'submitForm'])->name('contact.submit');
+
+Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
+Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 
 // Auth routes
 require __DIR__ . '/auth.php';

@@ -33,19 +33,14 @@ class RoomController extends Controller
         ]);
     }
 
-
     public function show($id)
     {
         $room = Room::with('roomOptions', 'pictures')->findOrFail($id);
-        $roomOptions = $room->roomOptions; // Assurez-vous que roomOptions est chargé
-        $roomPictures = $room->pictures; // Récupérer les photos supplémentaires
+        $roomOptions = $room->roomOptions;
+        $roomPictures = $room->pictures;
 
         return view('rooms.show', compact('room', 'roomOptions', 'roomPictures'));
     }
-
-
-
-
 
     public function edit($id)
     {
@@ -101,8 +96,9 @@ class RoomController extends Controller
             $room->roomOptions()->sync($syncData);
         }
 
-        return redirect()->route('admin.rooms.index')->with('success', 'Room mise à jour avec succès.');
+        return redirect()->route('admin.rooms.index')->with('success', 'Chambre mise à jour avec succès.');
     }
+
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -121,13 +117,13 @@ class RoomController extends Controller
         $room->description = $validatedData['description'];
         $room->picture = $path;
         $room->price_per_night = $validatedData['price_per_night'];
-        $room->save(); // Sauvegarder la chambre pour obtenir l'ID
+        $room->save();
 
         // Stocker les photos supplémentaires
         if ($request->hasFile('pictures')) {
             foreach ($request->file('pictures') as $picture) {
                 $path = $picture->store('public/rooms');
-                RoomPicture::create(['room_id' => $room->id, 'path' => $path]); // Utiliser l'ID de la chambre après la sauvegarde
+                RoomPicture::create(['room_id' => $room->id, 'path' => $path]);
             }
         }
 
@@ -145,10 +141,8 @@ class RoomController extends Controller
             $room->roomOptions()->sync($syncData);
         }
 
-        return redirect()->route('admin.rooms.create')->with('success', 'Room créée avec succès.');
+        return redirect()->route('admin.rooms.create')->with('success', 'Chambre créée avec succès.');
     }
-
-
 
     public function adminIndex()
     {
