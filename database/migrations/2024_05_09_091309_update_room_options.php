@@ -12,7 +12,7 @@ return new class extends Migration
 
         Schema::dropIfExists('chambre_equipement');
         Schema::dropIfExists('equipements');
-        Schema::dropIfExists('rooms');
+        Schema::dropIfExists('chambres');
 
         Schema::create('room_options', function (Blueprint $table) {
             $table->id();
@@ -58,7 +58,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('rooms', function (Blueprint $table) {
+        Schema::create('chambres', function (Blueprint $table) {
             $table->id();
             $table->string('nom');
             $table->text('description');

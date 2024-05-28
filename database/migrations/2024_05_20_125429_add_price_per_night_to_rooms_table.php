@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('rooms', function (Blueprint $table) {
-            $table->decimal('price_per_night', 8, 2)->after('label');
-
+            $table->decimal('price_per_night', 8, 2)->default(0)->after('label');
         });
     }
+
 
     /**
      * Reverse the migrations.
