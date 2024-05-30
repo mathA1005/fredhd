@@ -10,16 +10,16 @@
                     </a>
                 </div>
                 <div class="flex flex-col p-4 sm:p-5">
-                    <h3 class="text-lg font-bold text-gray-800 dark:text-white">
+                    <h3 class="text-lg font-bold text-customGreen">
                         {{ $room->label }}
                     </h3>
                     <div class="mt-2">
-                        <p class="text-xs text-gray-500 dark:text-neutral-500">
+                        <p class="text-s text-white">
                             {{ $room->price_per_night }} € / nuit
                         </p>
                     </div>
                     <div class="mt-3 flex-1">
-                        <p class="text-xs text-gray-500 dark:text-neutral-500">
+                        <p class="text-xs text-white ">
                             {{ $room->description }}
                         </p>
                     </div>
@@ -28,9 +28,9 @@
                             <h4 class="text-lg font-semibold text-gray-800 dark:text-neutral-300 dark:group-hover:text-white">Options :</h4>
                             <ul class="list-disc list-inside text-gray-600 dark:text-neutral-300 dark:group-hover:text-white">
                                 @foreach($room->roomOptions as $option)
-                                    <li class="flex items-center">
+                                    <li class="flex items-center ">
                                         @if($option->icon)
-                                            <i data-lucide="{{ $option->icon }}" class="ml-2 text-white"></i>
+                                            <i data-lucide="{{ $option->icon }}" class="ml-2  text-customGreen"></i>
                                         @endif
                                         <span class="ml-2">{{ $option->label }}</span>
                                     </li>
@@ -39,7 +39,7 @@
                         </div>
                     @endif
                     <div class="mt-5">
-                        <a class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl border border-transparent bg-lime-400 text-black hover:bg-lime-500 transition disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-lime-500" href="{{ route('reservation.show', ['id' => $room->id]) }}">Réservez la chambre</a>
+                        <a class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl border border-transparent bg-customGreen text-white hover:bg-customGreen transition disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-customGreen" href="{{ route('reservation.show', ['id' => $room->id]) }}">Réservez la chambre</a>
                     </div>
                 </div>
             </div>
@@ -47,6 +47,6 @@
     @endforeach
 </div>
 
-<div class="mt-6">
+<div class="mt-6 ">
     {{ $rooms->links() }}
 </div>
