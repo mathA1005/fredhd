@@ -7,6 +7,7 @@ use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use App\Models\RoomPicture;
+use Illuminate\Support\Facades\Storage;
 
 class RoomController extends Controller
 {
@@ -65,6 +66,7 @@ class RoomController extends Controller
         $validatedData = $request->validate([
             'label' => 'required|max:255',
             'description' => 'required',
+            'picture' => 'nullable|image',
             'pictures.*' => 'nullable|image',
             'price_per_night' => 'required|numeric|min:0',
         ]);
@@ -73,9 +75,27 @@ class RoomController extends Controller
         $room->label = $validatedData['label'];
         $room->description = $validatedData['description'];
         $room->price_per_night = $validatedData['price_per_night'];
+
+        if ($request->hasFile('picture')) {
+            // Supprimer l'ancienne photo principale
+            if ($room->picture) {
+                Storage::delete($room->picture);
+            }
+            // Sauvegarder la nouvelle photo principale
+            $path = $request->file('picture')->store('public/rooms');
+            $room->picture = $path;
+        }
+
         $room->save();
 
+        // Gestion des photos supplémentaires
         if ($request->hasFile('pictures')) {
+            // Supprimer les anciennes photos supplémentaires
+            foreach ($room->pictures as $picture) {
+                Storage::delete($picture->path);
+                $picture->delete();
+            }
+            // Sauvegarder les nouvelles photos supplémentaires
             foreach ($request->file('pictures') as $picture) {
                 $path = $picture->store('public/rooms');
                 RoomPicture::create(['room_id' => $room->id, 'path' => $path]);
@@ -98,6 +118,8 @@ class RoomController extends Controller
 
         return redirect()->route('admin.rooms.index')->with('success', 'Chambre mise à jour avec succès.');
     }
+
+
 
     public function store(Request $request)
     {

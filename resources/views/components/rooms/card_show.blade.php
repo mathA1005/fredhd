@@ -4,9 +4,9 @@
     <div class="p-4 rounded-xl">
         <!-- Carrousel d'images -->
         <div class="relative w-full mb-6">
-            <div class="carousel-images overflow-hidden rounded-xl">
+            <div class="carousel-images overflow-hidden rounded-xl h-[500px] flex items-center justify-center bg-neutral-900">
                 @foreach($roomPictures as $index => $picture)
-                    <img class="carousel-image w-full object-cover max-h-128 mb-4 {{ $index !== 0 ? 'hidden' : '' }}" src="{{ Storage::url($picture->path) }}" alt="Photo supplémentaire {{ $index + 1 }}">
+                    <img class="carousel-image max-h-full max-w-full object-contain {{ $index !== 0 ? 'hidden' : '' }}" src="{{ Storage::url($picture->path) }}" alt="Photo supplémentaire {{ $index + 1 }}">
                 @endforeach
             </div>
             <button class="carousel-control-prev absolute top-1/2 left-0 transform -translate-y-1/2 bg-gray-800 text-white px-3 py-2 rounded-full" onclick="prevSlide()">&#10094;</button>
