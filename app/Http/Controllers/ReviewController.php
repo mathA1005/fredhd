@@ -5,15 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Review;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class ReviewController extends Controller
 {
-    public function __construct()
-    {
-        if (!\Illuminate\Support\Facades\Auth::check()) {
-            return to_route('login');
-        }
-    }
+
 
     public function index()
     {
@@ -26,9 +22,7 @@ class ReviewController extends Controller
         if (!Gate::allows('admin')) {
             abort(403);
         }
-
-        $reviews = Review::with('user')->latest()->paginate(10);
-
+        $reviews = Review::latest()->get();
         return view('admin.reviews.index', compact('reviews'));
     }
 
@@ -43,7 +37,7 @@ class ReviewController extends Controller
             'comment' => $request->comment,
         ]);
 
-        return redirect()->back()->with('success', 'Votre avis a été ajouté.');
+        return redirect()->back()->with('success', 'Merci pour votre avis. Votre avis a bien été ajouté.');
     }
 
     public function destroy($id)
@@ -60,4 +54,5 @@ class ReviewController extends Controller
         }
 
         return redirect()->back()->with('error', 'L\'avis n\'a pas été trouvé.');
-    }}
+    }
+}

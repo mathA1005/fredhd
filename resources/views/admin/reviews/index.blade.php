@@ -1,42 +1,39 @@
-<!-- resources/views/admin/reviews/index.blade.php -->
-@extends('layouts.app')
-
+@extends('admin.layout')
 @section('content')
-    <div class="container">
-        <h1>Liste des avis</h1>
+    <body class="bg-gray-100 p-8">
+    <h1 class="text-2xl font-bold mb-4">Liste des Reviews</h1>
 
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
+    @if (session('success'))
+        <div class="bg-green-500 text-white p-4 rounded mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
 
-        @if(session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
-        @endif
+    @if (session('error'))
+        <div class="bg-red-500 text-white p-4 rounded mb-4">
+            {{ session('error') }}
+        </div>
+    @endif
 
-        <table class="table">
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white rounded-lg shadow-md">
             <thead>
             <tr>
-                <th>Utilisateur</th>
-                <th>Commentaire</th>
-                <th>Date</th>
-                <th>Actions</th>
+                <th class="py-2 px-4 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">Utilisateur</th>
+                <th class="py-2 px-4 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">Commentaire</th>
+                <th class="py-2 px-4 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">Actions</th>
             </tr>
             </thead>
             <tbody>
-            @foreach($reviews as $review)
-                <tr>
-                    <td>{{ $review->user->name }}</td>
-                    <td>{{ $review->comment }}</td>
-                    <td>{{ $review->created_at->format('d/m/Y H:i') }}</td>
-                    <td>
-                        <form action="{{ route('admin.reviews.destroy', $review->id) }}" method="POST">
+            @foreach ($reviews as $review)
+                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                    <td class="px-4 py-2 break-words max-w-xs">{{ $review->user->name }}</td>
+                    <td class="px-4 py-2 break-words max-w-xs">{{ $review->comment }}</td>
+                    <td class="px-4 py-2 flex space-x-2">
+                        <form action="{{ route('admin.reviews.destroy', $review->id) }}" method="POST" class="inline-block">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Supprimer</button>
+                            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Supprimer</button>
                         </form>
                     </td>
                 </tr>
@@ -44,4 +41,5 @@
             </tbody>
         </table>
     </div>
+    </body>
 @endsection

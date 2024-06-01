@@ -43,9 +43,13 @@
            class="flex items-center p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg">
             Contacts
         </a>
+        <a href="{{ url('admin/reviews') }}"
+           class="flex items-center p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg">
+            Reviews
+        </a>
         <a href="{{ url('../') }}"
            class="flex items-center p-2 text-gray-700 dark:text-red-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg">
-            Accueil
+            <=Accueil
         </a>
         <!-- Ajoutez d'autres liens ici -->
     </nav>

@@ -55,6 +55,18 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
     // Reservation routes
     Route::get('/reservation', [ReservationController::class, 'createFromAdmin'])->name('admin.reservation.createFromAdmin');
     Route::post('/reservation', [ReservationController::class, 'storeFromAdmin'])->name('admin.reservation.storeFromAdmin');
+
+
+    // Review routes
+    // Review routes
+    Route::prefix('reviews')->name('admin.reviews.')->group(function () {
+        Route::get('/', [ReviewController::class, 'adminIndex'])->name('index');
+        Route::delete('/{id}', [ReviewController::class, 'destroy'])->name('destroy');
+    });
+
+
+
+
 });
 
 // Profile routes
