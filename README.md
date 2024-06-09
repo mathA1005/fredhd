@@ -4,12 +4,11 @@
 Permet de réserver des chambres et d’administrer vos chambres grâce à cette application.
 
 Voici à quoi ressemble le site :
-![Capture d’écran 2024-06-09 à 15 34 45](https://github.com/mathA1005/fredhd/assets/125377274/5c0cdc73-e4cd-44a0-9b72-b1b9baa245c6)
-
-![Uploading Capture d’écran 2024-06-09 à 15.34.34.png…]()
-![Capture d’écran 2024-06-09 à 15 44 15](https://github.com/mathA1005/fredhd/assets/125377274/8a5b9cd4-9e71-4572-bead-abc71f33a104)
-![Capture d’écran 2024-06-09 à 15 44 58](https://github.com/mathA1005/fredhd/assets/125377274/10512b46-4527-4bfd-8aa5-5a429b18a12e)
-
+<p align="center">
+  <img src="https://github.com/mathA1005/fredhd/assets/125377274/5c0cdc73-e4cd-44a0-9b72-b1b9baa245c6" width="600" alt="Capture d’écran 1">
+  <img src="https://github.com/mathA1005/fredhd/assets/125377274/8a5b9cd4-9e71-4572-bead-abc71f33a104" width="600" alt="Capture d’écran 2">
+  <img src="https://github.com/mathA1005/fredhd/assets/125377274/10512b46-4527-4bfd-8aa5-5a429b18a12e" width="600" alt="Capture d’écran 3">
+</p>
 
 Il est développé en Laravel, Tailwind et js Easepick. Il intègre un calendrier Easepick.
 
