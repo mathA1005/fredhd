@@ -132,7 +132,7 @@ class RoomController extends Controller
         ]);
 
         // Stocker la photo principale
-        $path = $request->file('picture')->store('public/rooms');
+        $path = $request->file('picture')->store('public/storage/rooms');
 
         $room = new Room();
         $room->label = $validatedData['label'];
@@ -144,7 +144,7 @@ class RoomController extends Controller
         // Stocker les photos supplémentaires
         if ($request->hasFile('pictures')) {
             foreach ($request->file('pictures') as $picture) {
-                $path = $picture->store('public/rooms');
+                $path = $picture->store('public/storage/rooms');
                 RoomPicture::create(['room_id' => $room->id, 'path' => $path]);
             }
         }
