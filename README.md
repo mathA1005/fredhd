@@ -4,7 +4,9 @@
 Permet de réserver des chambres et d’administrer vos chambres grâce à cette application.
 
 Voici à quoi ressemble le site :
-![Aperçu du site](./path/to/image.png)
+![Capture d’écran 2024-06-09 à 15 34 45](https://github.com/mathA1005/fredhd/assets/125377274/5c0cdc73-e4cd-44a0-9b72-b1b9baa245c6)
+
+
 
 Il est développé en Laravel, Tailwind et js Easepick. Il intègre un calendrier Easepick.
 
